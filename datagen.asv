@@ -11,20 +11,12 @@ L = 5; % #Classes
 h = 10;  % The rank of matrix
 
 %%prior parameters
+m_u = normrnd(0,1,[h,1]);
+m_v = normrnd(0,1,[h,1]);
 
-m_mu = 0;
-m_mv = 0;
-v_mu = 1;
-v_mv = 1;
-
-m_u = normrnd(m+mu, v_mu, [h,1]);
-m_v = normrnd(m_mv, v_mv, [h,1]);
-
-%a_0', b_0'
-a0p = 10/2;
-b0p = 10/2;
-v_u = gamrnd(a0p, 1/b0p, [h,1]);
-v_v = gamrnd(a0p, 1/b0p, [h,1]);
+a0p = 
+v_u = gamrnd(10/2, 2/10, [h,1]);
+v_v = gamrnd(10/2, 2/10, [h,1]);
 
 a0 = 10/2;
 b0 = 10*sqrt(10) /2;
