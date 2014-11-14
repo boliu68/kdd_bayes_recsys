@@ -17,7 +17,7 @@ m_mv = 0;
 v_mu = 1;
 v_mv = 1;
 
-m_u = normrnd(m+mu, v_mu, [h,1]);
+m_u = normrnd(m_mu, v_mu, [h,1]);
 m_v = normrnd(m_mv, v_mv, [h,1]);
 
 %a_0', b_0'
