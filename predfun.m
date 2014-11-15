@@ -7,8 +7,18 @@ L = hyperpara.L;
 m_b = para.m_b;
 m_c = para.m_c;
 
+a_gamrow = para.a_gamrow;
+b_gamrow = para.b_gamrow;
+a_gamcol = para.a_gamcol;
+b_gamcol = para.b_gamcol;
+
+v_c = para.v_c;
+v_b = para.v_b;
+
 pred_row = pred_entry.row;
 pred_col = pred_entry.col;
+
+
 
 nPred = length(pred_row);
 
