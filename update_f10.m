@@ -13,53 +13,54 @@ function para = update_f10(para, hyperpara)
     b_vU_n10ik = zeros(1,h);
 
     for i = 1:d
-       
-        v_mU_n10ik = (1 ./ ((1 ./ para.v_mV) - (1 ./ para.h_v_mU10ik)));
-        m_mU_n10ik = v_mU_n10ik .* (para.m_mU ./ para. v_mU - para.h_m_mU10ik ./ para.h_v_mU10ik);
+       for k = 1:h
+        v_mU_n10ik = (1 ./ ((1 ./ para.v_mV) - (1 ./ para.h_v_mU10(:,:,i,k))));
+        m_mU_n10ik = v_mU_n10ik .* (para.m_mU ./ para. v_mU - para.h_m_mU10(:,:,i,k) ./ para.h_v_mU10(:,:,i,k));
         
-        v_u_n10ik(i,:) = (1 ./ ((1 ./ para.v_u(i,:)) - (1 ./ para.h_v_u10ik(i,:))));
-        m_u_n10ik(i,:) = v_u_n10ik(i,:) .* (para.m_u(i,:) ./ para.v_u(i,:) - para.h_m_u10ik(i,:) ./ para.h_v_u_10ik(i,:));
+        v_u_n10ik(i,k) = (1 ./ ((1 ./ para.v_u(i,k)) - (1 ./ para.h_v_u10(i,k))));
+        m_u_n10ik(i,k) = v_u_n10ik(i,k) .* (para.m_u(i,k) ./ para.v_u(i,k) - para.h_m_u10(i,k,i,k) ./ para.h_v_u10(i,k,i,k));
         
-        a_vU_n10ik = para.a_vU - para.h_a_vU10ik + 1;
-        b_vU_n10ik = para.b_vU - para.h_b_vU10ik;
+        a_vU_n10ik = para.a_vU - para.h_a_vU10(:,:,i,k) + 1;
+        b_vU_n10ik = para.b_vU - para.h_b_vU10(:,:,i,k);
         
         %%
         %normalize Z
-        is_update = (v_u_n10ik(i,:) > 0) & (v_mU_n10ik > 0) & (b_vU_n10ik > 0) & ((2 * a_vU_n10ik - 2) >0);
+        if (v_u_n10ik(i,k) > 0) & (v_mU_n10ik(k) > 0) & (b_vU_n10ik(k) > 0) & ((2 * a_vU_n10ik(k) - 2) >0)
         
-        mean_val = m_u_n10ik(i,is_update);
-        std_val = v_u_n10ik(i,is_update) + v_mU_n10ik(is_update) + 2 * b_vU_n10ik(is_update) ./ (2 * a_vU_n10ik(is_update) - 2);
-        std_val1 = v_u_n10ik(i,is_update) + v_mU_n10ik(is_update) + 2 * b_vU_n10ik(is_update) ./ (2 * a_vU_n10ik(is_update));
-        std_val2 = v_u_n10ik(i,is_update) + v_mU_n10ik(is_update) + 2 * b_vU_n10ik(is_update) ./ (2 * a_vU_n10ik(is_update) + 2);
-        
-        Z = pdf('Normal', m_mU_n10ik(is_update), mean_val, sqrt(std_val));
-        Z1 = pdf('Normal', m_mU_n10ik(is_update), mean_val, sqrt(std_val1));
-        Z2 = pdf('Normal', m_mU_n10ik(is_update), mean_val, sqrt(std_val2));
-        
-        %update for hat_....
+            mean_val = m_u_n10ik(i,k);
+            std_val = v_u_n10ik(i,k) + v_mU_n10ik(k) + 2 * b_vU_n10ik(k) ./ (2 * a_vU_n10ik(k) - 2);
+            std_val1 = v_u_n10ik(i,k) + v_mU_n10ik(k) + 2 * b_vU_n10ik(k) ./ (2 * a_vU_n10ik(k));
+            std_val2 = v_u_n10ik(i,k) + v_mU_n10ik(k) + 2 * b_vU_n10ik(k) ./ (2 * a_vU_n10ik(k) + 2);
+
+            Z = pdf('Normal', m_mU_n10ik(k), mean_val, sqrt(std_val));
+            Z1 = pdf('Normal', m_mU_n10ik(k), mean_val, sqrt(std_val1));
+            Z2 = pdf('Normal', m_mU_n10ik(k), mean_val, sqrt(std_val2));
+
+            %update for hat_....
+            %%
+            para.h_v_mU10ik(k) = 2 * b_vU_n10ik(k) ./ (2 *a_vU_n10ik(k) - 2) + v_u_n10ik(i,k);
+            para.h_m_mU10ik(k) = m_u_n10ik(i,k);
+            para.h_v_u10ik(i,k) = 2 * b_vU_n10ik(k) ./ (2 * a_vU_n10ik(k) - 2) + v_mU_n10ik(k);
+            para.h_m_u10ik(i,k) = m_mU_n10ik(k);
+
+            %a dot and b dot
+            ad = (a_vU_n10ik(k) .* Z1 .* Z1) ./ ((a_vU_n10ik(k) + 1) .* Z .* Z2 - a_vU_n10ik(k) .* Z1 .* Z1);
+            bd = (b_vU_n10ik(k) .* Z .* Z1) ./ ((a_vU_n10ik(k) + 1) .* Z .* Z2 - a_vU_n10ik(k) .* Z1 .* Z1);
+
+            para.h_a_vU10ik(k) = ad - a_vU_n10ik(k) + 1;
+            para.h_b_vU10ik(k) = bd - b_vU_n10ik(k);
+        end
         %%
-        para.h_v_mU10ik(is_update) = 2 * b_vU_n10ik(is_update) ./ (2 *a_vU_n10ik(is_update) - 2) + v_u_n10ik(i,is_update);
-        para.h_m_mU10ik(is_update) = m_u_n10ik(i,is_update);
-        para.h_v_u10ik(i,is_update) = 2 * b_vU_n10ik(is_update) ./ (2 * a_vU_n10ik(is_update) - 2) + v_mU_n10ik(is_update);
-        para.h_m_u10ik(i,is_update) = m_mU_n10ik(is_update);
+        para.v_mU(k) = (1 ./ ((1 ./ v_mU_n10ik(k)) + (1 ./ para.h_v_mU10(:,k,i,k))));
+        para.m_mU(k) = para.v_mU(k) .* (m_mU_n10ik(k) ./ v_mU_n10ik(k) + para.h_m_mU10(:,k,i,k) ./ para.h_v_mU10(:,k,i,k));
         
-        %a dot and b dot
-        ad = (a_vU_n10ik(is_update) .* Z1 .* Z1) ./ ((a_vU_n10ik(is_update) + 1) .* Z .* Z2 - a_vU_n10ik(is_update) .* Z1 .* Z1);
-        bd = (b_vU_n10ik(is_update) .* Z .* Z1) ./ ((a_vU_n10ik(is_update) + 1) .* Z .* Z2 - a_vU_n10ik(is_update) .* Z1 .* Z1);
+        para.v_u(i,k) = (1 ./ ((1 ./ v_u_n10ik(i,k)) + (1 ./ para.h_v_u10ik(i,k))));
+        para.u_u(i,k) = para.v_u(i,k) .* (m_u_n10ik(i,k) ./ v_u_n10ik(i,k) + para.h_m_u10ik(i,k) ./ para.h_v_u10ik(i,k));
         
-        para.h_a_vU10ik(is_update) = ad - a_vU_n10ik(is_update) + 1;
-        para.h_b_vU10ik(is_update) = bd - b_vU_n10ik(is_update);
+        para.a_vU(k) = a_vU_n10ik(k) + para.h_a_vU10(:,k,i,k) - 1;
+        para.b_vU(k) = b_vU_n10ik(k) + para.h_b_vU10(:,k,i,k);
         
-        %%
-        para.v_mU = (1 ./ ((1 ./ v_mU_n10ik) + (1 ./ para.h_v_mU10ik)));
-        para.m_mU = para.v_mU .* (m_mU_n10ik ./ v_mU_n10ik + para.h_m_mU10ik ./ para.h_v_mU10ik);
-        
-        para.v_u(i,:) = (1 ./ ((1 ./ v_u_n10ik(i,:)) + (1 ./ para.h_v_u10ik(i,:))));
-        para.u_u(i,:) = para.v_u(i,:) .* (m_u_n10ik(i,:) ./ v_u_n10ik(i,:) + para.h_m_u10ik(i,:) ./ para.h_v_u10ik(i,:));
-        
-        para.a_vU = a_vU_n10ik + para.h_a_vU10ik - 1;
-        para.b_vU = b_vU_n10ik + para.h_b_vU10ik;
-        
+       end
     end
 
 end

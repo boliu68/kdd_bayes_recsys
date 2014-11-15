@@ -7,9 +7,13 @@ function [m, v] = init_gaussian(h_m, h_v)
     %Assume Gaussian
     %the return m, v should be the same size with m,v
     %sometimes h_m should be 4 dimension
-    [x,y,z] = size(h_m);
+    [x,y,z,k] = size(h_m);
     
-    m = mean(h_m, 3) + rand(size(h_m(:,:,1)));
-    v = mean(h_v, 3) + rand(size(h_v(:,:,1)));
+    if k > 1
+        h_m = mean(h_m, 4);
+        h_v = mean(h_v, 4);
+    end
+        m = mean(h_m, 3) - rand(size(h_m(:,:,1)));
+        v = mean(h_v, 3) - rand(size(h_v(:,:,1)));
     
 end

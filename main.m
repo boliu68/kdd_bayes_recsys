@@ -1,5 +1,8 @@
 % This is the main function of this project
 
+clear;
+clc;
+
 %n: #Users
 %d: #Items
 %L: #Classes
@@ -7,7 +10,7 @@
 hyperpara.n = 10;
 hyperpara.d = 5;
 hyperpara.L = 5;
-hyperpara.h = 4;
+hyperpara.h = 3;
 
 %Test for syntax
 R = randi(5, hyperpara.n, hyperpara.d);
@@ -78,12 +81,14 @@ for iter = 1:max_iter
     para = update_f7(para, hyperpara);
     para = update_f8(para, hyperpara);
     para = update_f9(para, hyperpara);
-
-    
-    
+    para = update_f10(para, hyperpara);
+    para = update_f11(para, hyperpara, O);
+    para = update_f12(para, hyperpara, O);
+    para = update_f13(para, hyperpara, O, R);
     
 end
 
-
-
-
+para.v_b
+para.m_b
+para.v_a
+para.m_a
