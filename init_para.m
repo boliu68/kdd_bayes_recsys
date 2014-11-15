@@ -5,60 +5,66 @@ d = hyperpara.d;
 h = hyperpara.h;
 L = hyperpara.L;
 
+%Initilization for the total parameters
+para.a_vV = hyperpara.a0d * ones(1, h);
+para.b_vV = hyperpara.b0d * ones(1, h);
+
+para.a_vU = hyperpara.a0d * ones(1, h);
+para.b_vU = hyperpara.b0d * ones(1, h);
+
+para.m_mV = zeros(1,h);
+para.v_mV = ones(1,h);
+
+para.m_mU = zeros(1,h);
+para.v_mU = ones(1,h);
+
+para.a_gmacol = hyperpara.a0 * ones(1,d);
+para.b_gmacol = hyperpara.b0 * ones(1,d);
+
+para.a_gmarow= hyperpara.a0 * ones(1,n);
+para.b_gmarow= hyperpara.b0 * ones(1,n);
+
+para.m_b0 = hyperpara.m_b0;
+para.v_b0 = hyperpara.v0 * ones(size(para.h_m_b07));
+
+para.m_b = zeros(d,L-1);
+para.v_b = 10 * ones(d,L-1);
 
 %for f1
 para.h_a_vV1 = hyperpara.a0d * ones(1, h);
 para.h_b_vV1 = hyperpara.b0d * ones(1, h);
-para.a_vV = para.h_a_vV1;
-para.b_vV = para.h_b_vV1;
 
 %f2
 para.h_a_vU2 = hyperpara.a0d * ones(1, h);
 para.h_b_vU2 = hyperpara.b0d * ones(1, h);
-para.a_vU = para.h_a_vU2;
-para.b_vU = para.h_b_vU2;
 
 %f3
 para.h_m_mV3 = zeros(1,h);
 para.h_v_mV3 = ones(1,h);
-para.m_mV = zeros(1,h);
-para.v_mV = ones(1,h);
 
 %f4
 para.h_m_mU4 = zeros(1,h);
 para.h_v_mU4 = ones(1,h);
-para.m_mU = zeros(1,h);
-para.v_mU = ones(1,h);
 
 %f5
 para.h_a_gmacol5 = hyperpara.a0 * ones(1,d);
 para.h_b_gmacol5 = hyperpara.b0 * ones(1,d);
-para.a_gmacol = para.h_a_gmacol5;
-para.b_gmacol = para.h_b_gmacol5;
 
 %f6
-para.h_a_gmarow= hyperpara.a0 * ones(1,n);
-para.h_b_gmarow= hyperpara.b0 * ones(1,n);
-para.a_gmarow= para.h_a_gmacol5;
-para.b_gmarow= para.h_b_gmacol5;
+para.h_a_gmarow6 = hyperpara.a0 * ones(1,n);
+para.h_b_gmarow6 = hyperpara.b0 * ones(1,n);
 
 %f7
 para.h_m_b07 = hyperpara.m_b0;
 para.h_v_b07 = hyperpara.v0 * ones(size(para.h_m_b07));
-para.m_b0 = para.h_m_b07;
-para.v_b0 = para.h_v_b07;
 
 %f8
 para.h_m_b08 = zeros(1,L-1,d);
 para.h_v_b08 = 10 * ones (1,L-1,d);
-para.h_m_b8 = zeros(d,L-1,d);
-para.h_v_b8 = 10 * ones(d,L-1,d);
 
-para.m_b0 = zeros(1, L-1);
-para.v_b0 = 10 * ones(1, L-1);
 %initial Q currently by random
 %para.m_b0, para.v_b = init_gaussian(para.h_m_b08, para.h_v_b08);
-[para.m_b, para.v_b] = init_gaussian(para.h_m_b8, para.h_v_b8);
+%[para.m_b, para.v_b] = init_gaussian(para.h_m_b8, para.h_v_b8);
 
 %f9
 para.h_v_mV9 = 10 * ones(1,h, d,h);
