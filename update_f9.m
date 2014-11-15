@@ -1,6 +1,16 @@
 function para = update_f9(para, hyperpara)
 
-    d = size(para.h_v_v, 1);
+    d = hyperpara.d;
+    n = hyperpara.n;
+    h = hyperpara.h;
+    L = hyperpara.L;
+
+    v_mV_n9jk = 10 * ones(1,h);
+    m_mV_n9jk = zeros(1,h);
+    v_v_n9jk = 10 * ones(d,h);
+    m_v_n9jk = zeros(d,h);
+    a_vV_n9jk = zeros(1,h);
+    b_vV_n9jk = zeros(1,h);
 
     for j = 1:d
            %h dimension
@@ -40,14 +50,14 @@ function para = update_f9(para, hyperpara)
             para.h_a_vV9jk(is_update) = ad - a_vV_n9jk(is_update) + 1;
             para.h_b_vV9jk(is_update) = bd - b_vV_n9jk(is_update);
             
-            para.v_mV(is_update) = (1 ./ ((1 ./ v_mV_n9jk(is_update)) + (1 ./ para.h_v_mV9jk(is_update))));
-            para.m_mV(is_update) = para.v_mV(is_update) .* (m_mV_n9jk(is_update) ./ v_mV_n9jk(is_update) + para.h_m_mV9jk(is_update) ./ para.h_v_mV9jk(is_update));
+            para.v_mV = (1 ./ ((1 ./ v_mV_n9jk) + (1 ./ para.h_v_mV9jk)));
+            para.m_mV = para.v_mV .* (m_mV_n9jk ./ v_mV_n9jk + para.h_m_mV9jk ./ para.h_v_mV9jk);
             
-            para.v_v(j,is_update) = (1 ./ ((1 ./ v_v_n9jk(j,is_update)) + (1 ./ para.h_v_v9jk(j,is_update))));
-            para.m_v(j,is_update) = para.v_v(j,is_update) .* (m_v_n9jk(j,is_update) ./ v_v_n9jk(j,is_update) + para.h_m_v9jk(j,is_update) ./ para.h_v_v9jk(j,is_update));
+            para.v_v(j,:) = (1 ./ ((1 ./ v_v_n9jk(j,:)) + (1 ./ para.h_v_v9jk(j,:))));
+            para.m_v(j,:) = para.v_v(j,:) .* (m_v_n9jk(j,:) ./ v_v_n9jk(j,:) + para.h_m_v9jk(j,:) ./ para.h_v_v9jk(j,:));
             
-            para.a_vV(is_update) = a_vV_n9jk(is_update) + para.h_a_vV9jk(is_update) - 1;
-            para.b_vV(is_update) = b_vV_n9jk(is_update) + para.h_b_vV9jk(is_update);
+            para.a_vV = a_vV_n9jk + para.h_a_vV9jk - 1;
+            para.b_vV = b_vV_n9jk + para.h_b_vV9jk;
             
     end
 

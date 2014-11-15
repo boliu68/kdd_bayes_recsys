@@ -1,47 +1,98 @@
 function para = unpdate_f12(para, hyperpara, O)
 
     %%
-    %update Q_n12 ij for i,j \in O
-    upd = (1 ./ ((1 ./ para.v_a) - (1 ./ h_v_a12ij)));
-    v_a_n12ij(O) = upd(O);
-    
-    upd = v_a_n12ij .* (para.m_a ./ para.v_a - para.h_m_a12ij ./ para.h_v_a12ij);
-    m_a_n12ij(O) = upd(O);
-    
-    upd = (1 ./ ((1 ./ para.v_c) - (1 ./ para.h_v_c12ij)));
-    v_c_n12ij(O) = upd(O);
-    
-    upd = v_c_n12ij .* (para.m_c ./ para.v_c - para.h_m_c12ij ./ para.h_v_c12ij);
-    m_c_n12ij(O) = upd(O);
-    
-    %n dimension
-    a_gmarow_n12ij = para.a_gmarow - para.h_a_gmarow12ij + 1;
-    b_gmarow_n12ij = para.b_gmarow - para.h_b_gmarow12ij;
-    
-    %d dimension
-    a_gmacol_n12ij = para.a_gmacol - para.h_a_gmacol12ij + 1;
-    b_gmacol_n12ij = para.b_gmacol - para.h_b_gmacol12ij;
-    
-    %%
-    %Normalization
-    Z = zeros(n, d);
-    Z1row = zeros(n, d);
-    Z2row = zeros(n, d);
-    Z1col = zeros(n,d);
-    Z2col = zeros(n,d);
-    
-    mean_val = m_c_n12ij;
-    std_val = v_a_n12ij + v_c_n12ij + (b_gmarow_n12ij' * b_gmacol_n12ij) ./ ((a_gmarow_n12ij + 1)' * (a_gmacol_n12ij + 1));
-    std_val_1row = v_a_n12ij + v_c_n12ij + (b_gmarow_n12ij' * b_gmacol_n12ij) ./ ((a_gmarow_n12ij + 2)' * (a_gmacol_n12ij + 1));
-    std_val_2row = v_a_n12ij + v_c_n12ij + (b_gmarow_n12ij' * b_gmacol_n12ij) ./ ((a_gmarow_n12ij + 3)' * (a_gmacol_n12ij + 1));
-    std_val_1col = v_a_n12ij + v_c_n12ij + (b_gmarow_n12ij' * b_gmacol_n12ij) ./ ((a_gmarow_n12ij + 1)' * (a_gmacol_n12ij + 2));
-    std_val_2col = v_a_n12ij + v_c_n12ij + (b_gmarow_n12ij' * b_gmacol_n12ij) ./ ((a_gmarow_n12ij + 1)' * (a_gmacol_n12ij + 3));
-    
-    is_positive = (a_gmacol_n12ij > 2) & (b_gmacol_n12ij > 0) & (a_gmarow_n12ij > 2) & (b_gmarow_n12ij > 0) & (v_a_n12ij > 0) & (v_c_n12ij > 0);
-    Z(is_positive) = pdf('Normal',m_a_n12ij(is_positive), mean_val(is_positive), sqrt(std_val(is_positive)));
-    Z1row(is_positive) = pdf('Normal',m_a_n12ij(is_positive), mean_val(is_positive), sqrt(std_val_1row(is_positive)));
-    Z2row(is_positive) = pdf('Normal',m_a_n12ij(is_positive), mean_val(is_positive), sqrt(std_val_2row(is_positive)));
-    Z1col(is_positive) = pdf('Normal',m_a_n12ij(is_positive), mean_val(is_positive), sqrt(std_val_1col(is_positive)));
-    Z2col(is_positive) = pdf('Normal',m_a_n12ij(is_positive), mean_val(is_positive), sqrt(std_val_2col(is_positive)));
+    %initialize
+    d = hyperpara.d;
+    n = hyperpara.n;
+    h = hyperpara.h;
+    L = hyperpara.L;
+
+    v_a_n12ij = 10 * ones(n,d);
+    m_a_n12ij = zeros(n,d);
+    v_c_n12ij = 10 * ones(n,d);
+    m_c_n12ij = zeros(n,d);
+    a_gmarow_n12ij = zeros(1,n);
+    b_gmarow_n12ij = zeros(1,n);
+    a_gmacol_n12ij = zeros(1,d);
+    b_gmacol_n12ij = zeros(1,d);
+
+    %update
+   for i = 1:n
+    for j = 1:d
+
+        if O(i,j) != 1
+            continue
+        end
+
+        v_a_n12ij(i,j) = (1 / ((1 / para.v_a(i,j)) - (1 / para.h_v_a12ij(i,j))));
+        m_a_n12ij(i,j) = v_a_n12ij(i,j) * (para.m_a(i,j) / para.v_a(i,j) - para.h_m_a12ij(i,j) / para.h_v_a12ij(i,j));
+
+        v_c_n12ij(i,j) = (1 / ((1 / para.v_c(i,j)) - (1 / para.h_v_c12ij(i,j))));
+        m_c_n12ij(i,j) = v_c_n12ij(i,j) * (para.m_c(i,j) / para.v_c(i,j) - para.h_m_c12ij(i,j) / para.h_v_c12ij(i,j));
+
+        a_gmarow_n12ij(i) = para.a_gmarow(i) - para.h_a_gmarow12ij(i) + 1;
+        b_gmarow_n12ij(i) = para.b_gmarow(i) - para.h_b_gmarow12ij(i);
+
+        a_gmacol_n12ij(j) = para.a_gmacol(j) - para.h_a_gmacol12ij(j) + 1;
+        b_gmacol_n12ij(j) = para.b_gmacol(j) - para.h_b_gmacol12ij(j);
+
+
+        %Normalize
+
+        if a_gmacol_n12ij(j) > 2 && b_gmacol_n12ij(i) > 0 && a_gmarow_n12ij(i) > 2 && b_gmarow_n12ij(i) > 0 && v_a_n12ij(i,j) > 0 && v_c_n12ij(i,j) > 0
+
+            mean_value = m_c_n12ij(i,j);
+            std_value = v_a_n12ij(i,j) + v_c_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 1));
+            std_value1row = v_a_n12ij(i,j) + v_c_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 2) * (a_gmacol_n12ij(j) + 1));
+            std_value2row = v_a_n12ij(i,j) + v_c_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 3) * (a_gmacol_n12ij(j) + 1));
+            std_value1col = v_a_n12ij(i,j) + v_c_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 2));
+            std_value2col = v_a_n12ij(i,j) + v_c_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 3));
+            
+
+            Z = pdf('Normal', m_a_n12ij(i,j), mean_value, sqrt(std_value));
+            Z1row = pdf('Normal', m_a_n12ij(i,j), mean_value, sqrt(std_value1row));
+            Z2row = pdf('Normal', m_a_n12ij(i,j), mean_value, sqrt(std_value2row));
+            Z1col = pdf('Normal', m_a_n12ij(i,j), mean_value, sqrt(std_value1col));
+            Z2col = pdf('Normal', m_a_n12ij(i,j), mean_value, sqrt(std_value2col));
+
+            %update the hat f
+
+            upd_v_1 = v_c_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 1));
+            upd_v_2 = v_a_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 1));
+            if upd_v_1 > 0 && upd_v_2 > 0
+                para.h_m_a12ij(i,j) = m_c_n12ij(i,j);
+                para.h_v_a12ij(i,j) = v_c_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 1));;
+                
+                para.h_m_c12ij(i,j) = m_a_n12ij(i,j);
+                para.h_v_c12ij(i,j) = v_a_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 1));
+
+                %adrow, bdrow, adcol, bdcol
+                adrow = a_gmarow_n12ij(i) * (Z1row ^ 2) / ((a_gmarow_n12ij(i) + 1) * Z * Z2row - a_gmarow_n12ij(i) * (Z1row ^ 2));
+                bdrow = b_gmarow_n12ij(i) * Z * Z1row   / ((a_gmarow_n12ij(i) + 1) * Z * Z2row - a_gmarow_n12ij(i) * (Z1row ^ 2));
+
+                adcol = a_gmacol_n12ij(j) * (Z1col ^ 2) / ((a_gmacol_n12ij(j) + 1) * Z * Z2col - a_gmacol_n12ij(j) * (Z1col ^ 2));
+                bdcol = b_gmacol_n12ij(j) * Z * Z1col   / ((a_gmacol_n12ij(j) + 1) * Z * Z2col - a_gmacol_n12ij(j) * (Z1col ^ 2));
+
+
+                para.h_a_gmarow12ij(i) = adrow - a_gmarow_n12ij(i) + 1;
+                para.h_b_gmarow12ij(i) = bdrow - b_gmarow_n12ij(i);
+
+                para.h_a_gmacol12ij(j) = adcol - a_gmacol_n12ij(j) + 1;
+                para.h_b_gmacol12ij(j) = bdcol - b_gmacol_n12ij;
+            end
+            %recompute Q
+            para.v_a(i,j) = (1 / ((1 / v_a_n12ij(i,j)) + (1 / para.h_v_a12ij(i,j))));
+            para.m_a(i,j) = para.v_a(i,j) * (m_a_n12ij(i,j) / v_a_n12ij(i,j) + para.h_m_a12ij(i,j) / para.h_v_a12ij(i,j)); 
+            para.v_c(i,j) = (1 / ((1 / v_c_n12ij(i,j)) + (1 / para.h_v_c12ij(i,j))));
+            para.m_c(i,j) = para.v_c(i,j) * (m_c_n12ij(i,j) / v_c_n12ij(i,j) + para.h_m_c12ij(i,j) / para.h_v_c12ij(i,j));
+
+            para.a_gmarow(i) = a_gmarow_n12ij(i) + para.h_a_gmarow12ij(i) - 1;
+            para.b_gmarow(i) = b_gmarow_n12ij(i) + para.h_b_gmarow12ij(i);
+            para.a_gmacol(j) = a_gmacol_n12ij(j) + para.h_a_gmacol12ij(j) - 1;
+            para.b_gmacol(j) = b_gmacol_n12ij(j) + para.h_b_gmacol12ij(j);
+
+        end
+    end
+   end
 
 end

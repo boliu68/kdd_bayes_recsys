@@ -6,6 +6,6 @@ function para = update_f6(para, hyperpara)
    
    
    para.a_gmarow(:) = hyperpara.a0;
-   para.a_gmarow(:) = hyperpara.b0;
+   para.b_gmarow(:) = hyperpara.b0;
 
 end

@@ -1,5 +1,17 @@
 function para = update_f10(para, hyperpara)
 
+    d = hyperpara.d;
+    n = hyperpara.n;
+    h = hyperpara.h;
+    L = hyperpara.L;
+
+    v_mU_n10ik = 10 * ones(1,h);
+    m_mU_n10ik = zeros(1,h);
+    v_u_n10ik = 10 * ones(n,h);
+    m_u_n10ik = zeros(n,h);
+    a_vU_n10ik = zeros(1,h);
+    b_vU_n10ik = zeros(1,h);
+
     for i = 1:d
        
         v_mU_n10ik = (1 ./ ((1 ./ para.v_mV) - (1 ./ para.h_v_mU10ik)));
@@ -39,14 +51,14 @@ function para = update_f10(para, hyperpara)
         para.h_b_vU10ik(is_update) = bd - b_vU_n10ik(is_update);
         
         %%
-        para.v_mU(is_update) = (1 ./ ((1 ./ v_mU_n10ik(is_update)) + (1 ./ para.h_v_mU10ik(is_update))));
-        para.m_mU(is_update) = para.v_mU(is_update) .* (m_mU_n10ik(is_update) ./ v_mU_n10ik(is_update) + para.h_m_mU10ik(is_update) ./ para.h_v_mU10ik(is_update));
+        para.v_mU = (1 ./ ((1 ./ v_mU_n10ik) + (1 ./ para.h_v_mU10ik)));
+        para.m_mU = para.v_mU .* (m_mU_n10ik ./ v_mU_n10ik + para.h_m_mU10ik ./ para.h_v_mU10ik);
         
-        para.v_u(i,is_update) = (1 ./ ((1 ./ v_u_n10ik(i,is_update)) + (1 ./ para.h_v_u10ik(i,is_update))));
-        para.u_u(i,is_update) = para.v_u(i,is_update) .* (m_u_n10ik(i,is_update) ./ v_u_n10ik(i,is_update) + para.h_m_u10ik(i,is_update) ./ para.h_v_u10ik(i,is_update));
+        para.v_u(i,:) = (1 ./ ((1 ./ v_u_n10ik(i,:)) + (1 ./ para.h_v_u10ik(i,:))));
+        para.u_u(i,:) = para.v_u(i,:) .* (m_u_n10ik(i,:) ./ v_u_n10ik(i,:) + para.h_m_u10ik(i,:) ./ para.h_v_u10ik(i,:));
         
-        para.a_vU(is_update) = a_vU_n10ik(is_update) + para.h_a_vU10ik(is_update) - 1;
-        para.b_vU(is_update) = b_vU_n10ik(is_update) + para.h_b_vU10ik(is_update);
+        para.a_vU = a_vU_n10ik + para.h_a_vU10ik - 1;
+        para.b_vU = b_vU_n10ik + para.h_b_vU10ik;
         
     end
 
