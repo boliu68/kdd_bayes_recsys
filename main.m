@@ -7,21 +7,21 @@ clc;
 %d: #Items
 %L: #Classes
 %h: The rank of matrix
-% hyperpara.n = 10;
-% hyperpara.d = 5;
-% hyperpara.L = 5;
-% hyperpara.h = 3;
-% 
-% %Test for syntax
-% R = randi(5, hyperpara.n, hyperpara.d);
-% O = randi([0,1], hyperpara.n, hyperpara.d) == 1;
-data = load('movielens.mat');
-R = data.x;
-O = full(R) > 0;
-hyperpara.n = size(R,1);
-hyperpara.d = size(R,2);
+hyperpara.n = 10;
+hyperpara.d = 5;
 hyperpara.L = 5;
-hyperpara.h = 30;
+hyperpara.h = 3;
+
+%Test for syntax
+R = sparse(randi(5, hyperpara.n, hyperpara.d));
+O = sparse(randi([0,1], hyperpara.n, hyperpara.d) == 1);
+% data = load('movielens.mat');
+% R = data.x;
+% O = full(R) > 0;
+% hyperpara.n = size(R,1);
+% hyperpara.d = size(R,2);
+% hyperpara.L = 5;
+% hyperpara.h = 30;
 
 %% Setting hyperparameters
 hyperpara.m_mu = 0;
@@ -94,8 +94,3 @@ for iter = 1:max_iter
     para = update_f13(para, hyperpara, O, R);
     
 end
-
-para.v_b
-para.m_b
-para.v_a
-para.m_a
