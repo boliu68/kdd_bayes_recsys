@@ -20,21 +20,21 @@ function para = unpdate_f12(para, hyperpara, O)
    for i = 1:n
     for j = 1:d
 
-        if O(i,j) ~= 1
+        if full(O(i,j)) ~= 1
             continue
         end
 
-        v_a_n12ij(i,j) = (1 / ((1 / para.v_a(i,j)) - (1 / para.h_v_a12(i,j,i,j))));
-        m_a_n12ij(i,j) = v_a_n12ij(i,j) * (para.m_a(i,j) / para.v_a(i,j) - para.h_m_a12(i,j,i,j) / para.h_v_a12(i,j,i,j));
+        v_a_n12ij(i,j) = (1 / ((1 / para.v_a(i,j)) - (1 / para.h_v_a12(i,j))));
+        m_a_n12ij(i,j) = v_a_n12ij(i,j) * (para.m_a(i,j) / para.v_a(i,j) - para.h_m_a12(i,j) / para.h_v_a12(i,j));
 
-        v_c_n12ij(i,j) = (1 / ((1 / para.v_c(i,j)) - (1 / para.h_v_c12(i,j,i,j))));
-        m_c_n12ij(i,j) = v_c_n12ij(i,j) * (para.m_c(i,j) / para.v_c(i,j) - para.h_m_c12(i,j,i,j) / para.h_v_c12(i,j,i,j));
+        v_c_n12ij(i,j) = (1 / ((1 / para.v_c(i,j)) - (1 / para.h_v_c12(i,j))));
+        m_c_n12ij(i,j) = v_c_n12ij(i,j) * (para.m_c(i,j) / para.v_c(i,j) - para.h_m_c12(i,j) / para.h_v_c12(i,j));
 
-        a_gmarow_n12ij(i) = para.a_gmarow(i) - para.h_a_gmarow12(:,i,i,j) + 1;
-        b_gmarow_n12ij(i) = para.b_gmarow(i) - para.h_b_gmarow12(:,i,i,j);
+        a_gmarow_n12ij(i) = para.a_gmarow(i) - para.h_a_gmarow12(i,j) + 1;
+        b_gmarow_n12ij(i) = para.b_gmarow(i) - para.h_b_gmarow12(i,j);
 
-        a_gmacol_n12ij(j) = para.a_gmacol(j) - para.h_a_gmacol12(:,j,i,j) + 1;
-        b_gmacol_n12ij(j) = para.b_gmacol(j) - para.h_b_gmacol12(:,j,i,j);
+        a_gmacol_n12ij(j) = para.a_gmacol(j) - para.h_a_gmacol12(i,j) + 1;
+        b_gmacol_n12ij(j) = para.b_gmacol(j) - para.h_b_gmacol12(i,j);
 
         %Normalize
 
@@ -80,15 +80,15 @@ function para = unpdate_f12(para, hyperpara, O)
                 para.h_b_gmacol12(:,j,i,j) = bdcol - b_gmacol_n12ij(j);
             end
             %recompute Q
-            para.v_a(i,j) = (1 / ((1 / v_a_n12ij(i,j)) + (1 / para.h_v_a12(i,j,i,j))));
-            para.m_a(i,j) = para.v_a(i,j) * (m_a_n12ij(i,j) / v_a_n12ij(i,j) + para.h_m_a12(i,j,i,j) / para.h_v_a12(i,j,i,j)); 
+            para.v_a(i,j) = (1 / ((1 / v_a_n12ij(i,j)) + (1 / para.h_v_a12(i,j))));
+            para.m_a(i,j) = para.v_a(i,j) * (m_a_n12ij(i,j) / v_a_n12ij(i,j) + para.h_m_a12(i,j,i,j) / para.h_v_a12(i,j)); 
             para.v_c(i,j) = (1 / ((1 / v_c_n12ij(i,j)) + (1 / para.h_v_c12(i,j,i,j))));
-            para.m_c(i,j) = para.v_c(i,j) * (m_c_n12ij(i,j) / v_c_n12ij(i,j) + para.h_m_c12(i,j,i,j) / para.h_v_c12(i,j,i,j));
+            para.m_c(i,j) = para.v_c(i,j) * (m_c_n12ij(i,j) / v_c_n12ij(i,j) + para.h_m_c12(i,j,i,j) / para.h_v_c12(i,j));
 
-            para.a_gmarow(i) = a_gmarow_n12ij(i) + para.h_a_gmarow12(:,i,i,j) - 1;
-            para.b_gmarow(i) = b_gmarow_n12ij(i) + para.h_b_gmarow12(:,i,i,j);
-            para.a_gmacol(j) = a_gmacol_n12ij(j) + para.h_a_gmacol12(:,j,i,j) - 1;
-            para.b_gmacol(j) = b_gmacol_n12ij(j) + para.h_b_gmacol12(:,j,i,j);
+            para.a_gmarow(i) = a_gmarow_n12ij(i) + para.h_a_gmarow12(i,j) - 1;
+            para.b_gmarow(i) = b_gmarow_n12ij(i) + para.h_b_gmarow12(i,j);
+            para.a_gmacol(j) = a_gmacol_n12ij(j) + para.h_a_gmacol12(i,j) - 1;
+            para.b_gmacol(j) = b_gmacol_n12ij(j) + para.h_b_gmacol12(i,j);
 
         end
     end
