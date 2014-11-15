@@ -1,5 +1,15 @@
 function para = update_f13(para, hyperpara, O, R)
 
+	d = hyperpara.d;
+    n = hyperpara.n;
+    h = hyperpara.h;
+    L = hyperpara.L;
+
+    v_b_n13ijk = 10 * ones(d,L-1);
+    m_b_n13ijk = zeros(d,L-1);
+    v_a_n13ijk = 10 * ones(n,L-1);
+    m_a_n13ijk = zeros(n,L-1);
+
 	for i = 1:n
 		for j = 1:d
 			for k = 1:L-1

@@ -2,6 +2,19 @@ function para = unpdate_f12(para, hyperpara, O)
 
     %%
     %initialize
+    d = hyperpara.d;
+    n = hyperpara.n;
+    h = hyperpara.h;
+    L = hyperpara.L;
+
+    v_a_n12ij = 10 * ones(n,d);
+    m_a_n12ij = zeros(n,d);
+    v_c_n12ij = 10 * ones(n,d);
+    m_c_n12ij = zeros(n,d);
+    a_gmarow_n12ij = zeros(1,n);
+    b_gmarow_n12ij = zeros(1,n);
+    a_gmacol_n12ij = zeros(1,d);
+    b_gmacol_n12ij = zeros(1,d);
 
     %update
    for i = 1:n

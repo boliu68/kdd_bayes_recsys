@@ -1,5 +1,17 @@
 function para = update_f10(para, hyperpara)
 
+    d = hyperpara.d;
+    n = hyperpara.n;
+    h = hyperpara.h;
+    L = hyperpara.L;
+
+    v_mU_n10ik = 10 * ones(1,h);
+    m_mU_n10ik = zeros(1,h);
+    v_u_n10ik = 10 * ones(n,h);
+    m_u_n10ik = zeros(n,h);
+    a_vU_n10ik = zeros(1,h);
+    b_vU_n10ik = zeros(1,h);
+
     for i = 1:d
        
         v_mU_n10ik = (1 ./ ((1 ./ para.v_mV) - (1 ./ para.h_v_mU10ik)));
