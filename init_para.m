@@ -59,8 +59,11 @@ para.h_m_b07 = hyperpara.m_b0;
 para.h_v_b07 = hyperpara.v0 * ones(size(para.h_m_b07));
 
 %f8
-para.h_m_b08 = zeros(1,L-1,d);
-para.h_v_b08 = 10 * ones (1,L-1,d);
+para.h_m_b08 = zeros(d, L-1);
+para.h_v_b08 = 20 * ones (d, L-1);
+
+para.h_m_b8 = zeros(d, L-1);
+para.h_v_b8 = 20 * ones (d, L-1);
 
 %initial Q currently by random
 %para.m_b0, para.v_b = init_gaussian(para.h_m_b08, para.h_v_b08);
