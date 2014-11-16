@@ -50,16 +50,25 @@ for j = 1:d
             
             para.h_a_vV9(j,k) = ad - a_vV_n9jk(k) + 1;
             para.h_b_vV9(j,k) = bd - b_vV_n9jk(k);
+            
+            para.v_mV(k) = (1 ./ ((1 ./ v_mV_n9jk(k)) + (1 ./ para.h_v_mV9(j,k))));
+            para.m_mV(k) = para.v_mV(k) .* (m_mV_n9jk(k) ./ v_mV_n9jk(k) + para.h_m_mV9(j,k) ./ para.h_v_mV9(j,k));
+            
+            para.v_v(j,k) = (1 ./ ((1 ./ v_v_n9jk(j,k)) + (1 ./ para.h_v_v9(j,k))));
+            para.m_v(j,k) = para.v_v(j,k) .* (m_v_n9jk(j,k) ./ v_v_n9jk(j,k) + para.h_m_v9(j,k) ./ para.h_v_v9(j,k));
+            
+            para.a_vV(k) = a_vV_n9jk(k) + para.h_a_vV9(j,k) - 1;
+            para.b_vV(k) = b_vV_n9jk(k) + para.h_b_vV9(j,k);
+            
         end
-        
-        para.v_mV(k) = (1 ./ ((1 ./ v_mV_n9jk(k)) + (1 ./ para.h_v_mV9(j,k))));
-        para.m_mV(k) = para.v_mV(k) .* (m_mV_n9jk(k) ./ v_mV_n9jk(k) + para.h_m_mV9(j,k) ./ para.h_v_mV9(j,k));
-        
-        para.v_v(j,k) = (1 ./ ((1 ./ v_v_n9jk(j,k)) + (1 ./ para.h_v_v9(j,k))));
-        para.m_v(j,k) = para.v_v(j,k) .* (m_v_n9jk(j,k) ./ v_v_n9jk(j,k) + para.h_m_v9(j,k) ./ para.h_v_v9(j,k));
-        
-        para.a_vV(k) = a_vV_n9jk(k) + para.h_a_vV9(j,k) - 1;
-        para.b_vV(k) = b_vV_n9jk(k) + para.h_b_vV9(j,k);
+        %         para.v_mV(k) = (1 ./ ((1 ./ v_mV_n9jk(k)) + (1 ./ para.h_v_mV9(j,k))));
+        %         para.m_mV(k) = para.v_mV(k) .* (m_mV_n9jk(k) ./ v_mV_n9jk(k) + para.h_m_mV9(j,k) ./ para.h_v_mV9(j,k));
+        %
+        %         para.v_v(j,k) = (1 ./ ((1 ./ v_v_n9jk(j,k)) + (1 ./ para.h_v_v9(j,k))));
+        %         para.m_v(j,k) = para.v_v(j,k) .* (m_v_n9jk(j,k) ./ v_v_n9jk(j,k) + para.h_m_v9(j,k) ./ para.h_v_v9(j,k));
+        %
+        %         para.a_vV(k) = a_vV_n9jk(k) + para.h_a_vV9(j,k) - 1;
+        %         para.b_vV(k) = b_vV_n9jk(k) + para.h_b_vV9(j,k);
     end
 end
 
