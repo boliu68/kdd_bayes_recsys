@@ -4,7 +4,7 @@
 
 %% Parameter Setting
 n = 50;  % #Users
-d = 200; % #Items
+d = 40; % #Items
 
 L = 5; % #Classes
 
@@ -17,22 +17,22 @@ m_mv = 0;
 v_mu = 1;
 v_mv = 1;
 
-m_u = normrnd(m_mu, v_mu, [h,1]);
-m_v = normrnd(m_mv, v_mv, [h,1]);
+m_u = normrnd(m_mu, v_mu, [1,h]);
+m_v = normrnd(m_mv, v_mv, [1,h]);
 
 %a_0', b_0'
 a0p = 10/2;
 b0p = 10/2;
-v_u = gamrnd(a0p, 1/b0p, [h,1]);
-v_v = gamrnd(a0p, 1/b0p, [h,1]);
+v_u = gamrnd(a0p, 1/b0p, [1,h]);
+v_v = gamrnd(a0p, 1/b0p, [1,h]);
 
 a0 = 10/2;
 b0 = 10*sqrt(10) /2;
 
-gam_row = gamrnd(a0, 1/b0, [n,1]);
-gam_col = gamrnd(a0, 1/b0, [d,1]);
+gam_row = gamrnd(a0, 1/b0, [1,n]);
+gam_col = gamrnd(a0, 1/b0, [1,d]);
 
-m_b0 = [-6; -2; 2; 6];
+m_b0 = [-6 -2 2 6];
 v0 = 0.1;
 
 b0 = normrnd(m_b0, v0 * ones(size(m_b0)));
@@ -55,7 +55,7 @@ end
 C = U' * V;
 
 % a
-A = normrnd(C, gam_row * gam_col');
+A = normrnd(C, gam_row' * gam_col);
 
 % B
 B = zeros(L-1, d);
@@ -68,7 +68,13 @@ tmp = zeros(size(A));
 for i = 1: L-1
     tmp = tmp + bsxfun(@ge, A, B(i,:));
 end
+B = B';
+U = U';
+V = V';
+
 R = tmp + 1;
+R = sparse(R);
+O = sparse(randi([0,1],size(R)) == 1);
 
 A = A';
 C = C';
