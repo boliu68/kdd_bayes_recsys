@@ -1,4 +1,4 @@
-function [ inforgain ] = computute_user_infogain( para, hyperpara, test_entry )
+function [ inforgain ] = compute_user_infogain( para, hyperpara, test_entry )
 %COMPUTUTE_INFOGAIN Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -9,11 +9,12 @@ function [ inforgain ] = computute_user_infogain( para, hyperpara, test_entry )
  term1 = compute_entropy(Rpred);
  
  
+ i = test_entry.row;
  
  Nsample = 100;
  sample_u = normrnd(repmat(m_u(i,:), [Nsample, 1]), repmat(v_u(i,:), [Nsample, 1]));
  pred_u = compute_pred_u(para, hyperpara, test_entry, sample_u);
- term2 = sum(comput_entropy(pred_u));
+ term2 = sum(compute_entropy(pred_u));
  
  inforgain = term1+term2; 
  
@@ -53,7 +54,7 @@ v_v_t = v_v(sample_col,:);
 
 
 m_c_star = dot(m_u_t , m_v_t,2);
-v_c_star = dot(v_v_t , m_u_t^2,2);
+v_c_star = dot(v_v_t , m_u_t.^2,2);
 
 %ind2 = sub2ind(size(m_c_star), sample_row, sample_col);
 b_gamrow_t = b_gamrow(sample_row);
@@ -70,14 +71,14 @@ for i = 1:L
     else
     ind = sub2ind(size(m_b), sample_row, i*ones(size(sample_row)));
     ind3 = sub2ind(size(v_b), sample_col, i*ones(size(sample_col)));
-	zeta1 = (m_b(ind') - m_c_star) .* (v_c_star + v_b(ind3') + v_gam').^(0.5);
+	zeta1 = (m_b(ind) - m_c_star) .* (v_c_star + v_b(ind3) + v_gam').^(0.5);
     end
     if i == 1
 	zeta2 = -inf;
     else 
 	ind = sub2ind(size(m_b), sample_row, (i-1)*ones(size(sample_row)));
 	ind3 = sub2ind(size(v_b), sample_col, (i-1)*ones(size(sample_col)));
-	zeta2 = (m_b(ind') - m_c_star) .* (v_c_star + v_b(ind3') + v_gam').^(0.5);
+	zeta2 = (m_b(ind) - m_c_star) .* (v_c_star + v_b(ind3) + v_gam').^(0.5);
     end
     pred_u(:, i) =  normcdf(zeta1) - normcdf(zeta2);
 end

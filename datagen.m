@@ -70,7 +70,10 @@ for i = 1: L-1
 end
 R = tmp + 1;
 
-
-
+A = A';
+C = C';
+B = B';
+V = V';
+U = U';
 
 
