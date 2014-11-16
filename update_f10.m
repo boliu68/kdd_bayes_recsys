@@ -12,7 +12,7 @@ function para = update_f10(para, hyperpara)
     a_vU_n10ik = zeros(1,h);
     b_vU_n10ik = zeros(1,h);
 
-    for i = 1:d
+    for i = 1:n
        for k = 1:h
         v_mU_n10ik = (1 ./ ((1 ./ para.v_mV(k)) - (1 ./ para.h_v_mU10(i,:))));
         m_mU_n10ik = v_mU_n10ik .* (para.m_mU(k) ./ para.v_mU(k) - para.h_m_mU10(i,:) ./ para.h_v_mU10(i,:));

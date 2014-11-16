@@ -109,30 +109,30 @@ para.a_vU = ones(1,h);
 para.b_vU = ones(1,h);
 
 %f11 not use EP
-para.h_v_v11 = 10 * ones(d,h);
+para.h_v_v11 = 10 * zeros(d,h);
 para.h_m_v11 = zeros(d,h);
 para.h_v_u11 = 10 * ones(n,h);
 para.h_m_u11 = zeros(n,h);
-para.h_v_c11 = 10 * ones(n,d);
-para.h_m_c11 = zeros(n,d);
+para.h_v_c11 = init_v(O,n,d);%10 * ones(n,d);
+para.h_m_c11 = sparse(zeros(n,d));
 
-para.m_c = zeros(n,d);
-para.v_c = 10 * ones(n,d) - rand(n,d);
+para.m_c = sparse(zeros(n,d));
+para.v_c = init_v(O,n,d);%10 * ones(n,d) - rand(n,d);
 
 %f12
- para.h_m_a12 = zeros(n,d);
- para.h_v_a12 = 10 * ones(n,d);
- para.h_m_c12 = zeros(n,d);
- para.h_v_c12 = 10 * ones(n,d);
- para.h_a_gmarow12 = zeros(n,d);
- para.h_b_gmarow12 = zeros(n,d);
- para.h_a_gmacol12 = zeros(n,d);
- para.h_b_gmacol12 = zeros(n,d);
+ para.h_m_a12 = sparse(zeros(n,d));
+ para.h_v_a12 = init_v(O,n,d);%10 * ones(n,d);
+ para.h_m_c12 = sparse(zeros(n,d));
+ para.h_v_c12 = init_v(O,n,d);%10 * ones(n,d);
+ para.h_a_gmarow12 = sparse(zeros(n,d));
+ para.h_b_gmarow12 = sparse(zeros(n,d));
+ para.h_a_gmacol12 = sparse(zeros(n,d));
+ para.h_b_gmacol12 = sparse(zeros(n,d));
  
- para.m_a = zeros(n,d);
- para.v_a = 10 * ones(n,d) + rand(n,d);
-  para.m_c = zeros(n,d);
- para.v_c = 10 * ones(n,d) + rand(n,d);
+ para.m_a = sparse(zeros(n,d));
+ para.v_a = init_v(O,n,d);%10 * ones(n,d) + rand(n,d);
+  para.m_c = sparse(zeros(n,d));
+ para.v_c = init_v(O,n,d);%10 * ones(n,d) + rand(n,d);
  para.a_gmarow = ones(1,n);
  para.b_gmarow = ones(1,n);
  para.a_gmacol = ones(1,d);
@@ -143,10 +143,16 @@ para.v_c = 10 * ones(n,d) - rand(n,d);
 %  [para.a_gmacol, para.b_gmacol] = init_inverse_gma(para.h_a_gmacol12, para.h_b_gmacol12);
 
  %
- para.h_m_b13 = zeros(n,d,L-1);
- para.h_v_b13 = 10 * ones(n,d,L-1);
- para.h_m_a13 = zeros(n,d,L-1);
- para.h_v_a13 = 10 * ones(n,d,L-1);
+%  para.h_m_b13 = sparse(zeros(n,d,L-1));
+%  para.h_v_b13 = zeros()%10 * ones(n,d,L-1);
+%  para.h_m_a13 = zeros(n,d,L-1);
+%  para.h_v_a13 = 10 * ones(n,d,L-1);
+para.h_m_b13 = repmat({sparse(zeros(n,d))}, 1, L-1);
+para.h_v_b13 = repmat({init_v(O,n,d)}, 1, L-1);
+para.h_m_a13 = repmat({sparse(zeros(n,d))}, 1, L-1);
+para.h_v_a13 = repmat({init_v(O, n,d)}, 1, L-1);
+
+
  %para.v_b = 10 * ones(d,L-1);
  %para.m_qb = zeros(d,L-1);
  %para.v_a = 10 * ones(n,d);

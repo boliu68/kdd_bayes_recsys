@@ -23,6 +23,7 @@ O = randi([0,1], hyperpara.n, hyperpara.d) == 1;
 % hyperpara.L = 5;
 % hyperpara.h = 30;
 
+
 %% Setting hyperparameters
 hyperpara.m_mu = 0;
 hyperpara.m_mv = 0;
@@ -89,9 +90,8 @@ for iter = 1:max_iter
     para = update_f8(para, hyperpara);
     para = update_f9(para, hyperpara);
     para = update_f10(para, hyperpara);
-    para = update_f11(para, hyperpara, O);
+    %para = update_f11(para, hyperpara, O);
     para = update_f12(para, hyperpara, O);
     para = update_f13(para, hyperpara, O, R);
     
 end
-

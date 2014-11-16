@@ -17,12 +17,17 @@ function para = unpdate_f12(para, hyperpara, O)
     b_gmacol_n12ij = zeros(1,d);
 
     %update
-   for i = 1:n
-    for j = 1:d
-
-        if full(O(i,j)) ~= 1
-            continue
-        end
+%    for i = 1:n
+%     for j = 1:d
+% 
+%         if full(O(i,j)) ~= 1
+%             continue
+%         end
+    [nnz_i, nnz_j, nnz_r] = find(O);
+    
+    for idx = 1:size(nnz_i)
+            i = nnz_i(idx);
+            j = nnz_j(idx);
 
         v_a_n12ij(i,j) = (1 / ((1 / para.v_a(i,j)) - (1 / para.h_v_a12(i,j))));
         m_a_n12ij(i,j) = v_a_n12ij(i,j) * (para.m_a(i,j) / para.v_a(i,j) - para.h_m_a12(i,j) / para.h_v_a12(i,j));
@@ -91,7 +96,6 @@ function para = unpdate_f12(para, hyperpara, O)
             para.b_gmacol(j) = b_gmacol_n12ij(j) + para.h_b_gmacol12(i,j);
 
         end
-    end
    end
 
 end
