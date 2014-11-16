@@ -20,12 +20,6 @@ function para = update_f11(para, hyperpara, O)
     for idx = 1:size(nnz_i)
             i = nnz_i(idx);
             j = nnz_j(idx);
-%             if O(i,j) ~= 1
-%                 continue
-%             end
-%             i
-%             j
-%             continue
 
             v_v_n11(j,:) = (1 ./ ((1 ./ para.v_v(j,:)) - (1 ./ para.h_v_v11(j,:))));
             m_v_n11(j,:) = v_v_n11(j,:) .* (para.m_v(j,:) ./ para.v_v(j,:) - para.h_m_v11(j,:) ./ para.h_v_v11(j,:));
@@ -56,8 +50,7 @@ function para = update_f11(para, hyperpara, O)
                 h_v_v11_upd = (1 ./ ((1 ./ para.v_v(j,:)) + (1 ./ v_v_n11(j,:))));
                 h_v_u11_upd = (1 ./ ((1 ./ para.v_u(i,:)) + (1 ./ v_u_n11(i,:))));
                 
-                
-                is_update = h_v_v11_upd >0 &  h_v_u11_upd > 0 & h_v_c11_upd > 0;
+                is_update = h_v_v11_upd >0 &  h_v_u11_upd > 0;
                 
                 para.h_v_v11(j, is_update) = h_v_v11_upd(is_update);%(1 ./ ((1 ./ para.v_v(j,is_update)) + (1 ./ v_v_n11(j,is_update))));
                 para.h_m_v11(j, is_update) = para.h_v_v11(j, is_update) .* (para.m_v(j, is_update) ./ para.v_v(j, is_update) - m_v_n11(j, is_update) ./ v_v_n11(j, is_update));

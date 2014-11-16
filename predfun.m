@@ -23,8 +23,8 @@ b_gamcol = para.b_gmacol;
 
 v_b = para.v_b;
 
-pred_row = pred_entry.row;
-pred_col = pred_entry.col;
+pred_row = pred_entry.row';
+pred_col = pred_entry.col';
 
 
 nPred = length(pred_row);
@@ -43,23 +43,20 @@ a_gamrow_t = a_gamrow(pred_row);
 b_gamcol_t = b_gamcol(pred_col);
 a_gamcol_t = a_gamcol(pred_col);
 v_gam = (b_gamrow_t.* b_gamcol_t).*(1./((a_gamrow_t+1).*(a_gamcol_t + a_gamcol_t )));
-v_gam = reshape(v_gam, [L-1,1]);
+v_gam = reshape(v_gam, [nPred,1]);
 Rpred = zeros(nPred, L);
 for i = 1:L    
-        
-
-    
     if i == 5
 	zeta1 = inf;
     else
-    ind = sub2ind(size(m_b), pred_row, i*ones(size(pred_row)));
+    ind = sub2ind(size(m_b), pred_col, i*ones(size(pred_col)));
     ind3 = sub2ind(size(v_b), pred_col, i*ones(size(pred_col)));
 	zeta1 = (m_b(ind') - m_c_star) .* (v_c_star + v_b(ind3') + v_gam).^(0.5);
     end
     if i == 1
 	zeta2 = -inf;
     else 
-	ind = sub2ind(size(m_b), pred_row, (i-1)*ones(size(pred_row)));
+	ind = sub2ind(size(m_b), pred_col, (i-1)*ones(size(pred_col)));
 	ind3 = sub2ind(size(v_b), pred_col, (i-1)*ones(size(pred_col)));
 	zeta2 = (m_b(ind') - m_c_star) .* (v_c_star + v_b(ind3') + v_gam).^(0.5);
     end
