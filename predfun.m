@@ -52,14 +52,14 @@ for i = 1:L
     if i == 5
 	zeta1 = inf;
     else
-    ind = sub2ind(size(m_b), pred_row, i*ones(size(pred_row)));
+    ind = sub2ind(size(m_b), pred_col, i*ones(size(pred_col)));
     ind3 = sub2ind(size(v_b), pred_col, i*ones(size(pred_col)));
 	zeta1 = (m_b(ind') - m_c_star) .* (v_c_star + v_b(ind3') + v_gam).^(0.5);
     end
     if i == 1
 	zeta2 = -inf;
     else 
-	ind = sub2ind(size(m_b), pred_row, (i-1)*ones(size(pred_row)));
+	ind = sub2ind(size(m_b), pred_col, (i-1)*ones(size(pred_col)));
 	ind3 = sub2ind(size(v_b), pred_col, (i-1)*ones(size(pred_col)));
 	zeta2 = (m_b(ind') - m_c_star) .* (v_c_star + v_b(ind3') + v_gam).^(0.5);
     end
