@@ -15,11 +15,20 @@ clc;
 % %Test for syntax
 % R = sparse(randi(5, hyperpara.n, hyperpara.d));
 % O = sparse(randi([0,1], hyperpara.n, hyperpara.d) == 1);
-data = load('movielens.mat');
-R = data.x;
-O = R > 0;
-hyperpara.n = size(R,1);
-hyperpara.d = size(R,2);
+% data = load('movielens1M.mat');
+% R = data.X;
+% O = R > 0;
+% hyperpara.n = size(R,1);
+% hyperpara.d = size(R,2);
+% hyperpara.L = 5;
+% hyperpara.h = 10;
+
+datagen;
+% x = load('test.mat');
+% R = x.R;
+% O = x.O;
+hyperpara.n = 50;
+hyperpara.d = 40;
 hyperpara.L = 5;
 hyperpara.h = 10;
 
@@ -38,10 +47,11 @@ hyperpara.b0 = 10*sqrt(10) /2;
 hyperpara.m_b0 = [-6 -2 2 6];
 hyperpara.v0 = 0.1;
 
-max_iter = 3;   %iteration number
+max_iter = 10;   %iteration number
 
 %% Initialization should be here
 init_para
+%init_test
 % a_gamcol = a0 * zeros(d,1);
 % b_gamcol = b0 * zeros(d,1);
 % 
@@ -78,7 +88,14 @@ init_para
 
 % This is the iteration of update
 for iter = 1:max_iter
-    
+    disp(['Iteration:',int2str(iter)])
+    para = update_f13(para, hyperpara, O, R);
+    para = update_f12(para, hyperpara, O);
+    para = update_f11(para, hyperpara, O);
+    para = update_f10(para, hyperpara);
+    para = update_f9(para, hyperpara);
+    para = update_f8(para, hyperpara);
+
     para = update_f1(para, hyperpara);
     para = update_f2(para, hyperpara);
     para = update_f3(para, hyperpara);
@@ -86,11 +103,22 @@ for iter = 1:max_iter
     para = update_f5(para, hyperpara);
     para = update_f6(para, hyperpara);
     para = update_f7(para, hyperpara);
-    para = update_f8(para, hyperpara);
-    para = update_f9(para, hyperpara);
-    para = update_f10(para, hyperpara);
-    %para = update_f11(para, hyperpara, O);
-    para = update_f12(para, hyperpara, O);
-    para = update_f13(para, hyperpara, O, R);
-    
+    %full(para.m_a(O))
 end
+
+% disp('------a-------')
+% A(O)
+% full(para.m_a(O))
+% full(para.v_a(O))
+% disp('------c-------')
+% C(O)
+% full(para.m_c(O))
+% full(para.m_c(O))
+
+
+disp('-------a-----------')
+A(O)
+R(O)
+para.m_b
+full(para.m_a(O))
+full(para.v_a(O))
