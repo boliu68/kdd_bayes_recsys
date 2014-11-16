@@ -149,8 +149,8 @@ para.h_v_b13 = repmat({init_v(O,n,d)}, 1, L-1);
 para.h_m_a13 = repmat({sparse(zeros(n,d))}, 1, L-1);
 para.h_v_a13 = repmat({init_v(O, n,d)}, 1, L-1);
 
-para.v_a = para.v_a / sqrt(L);
-para.v_b = para.v_b / sqrt(L);
+% para.v_a = para.v_a / sqrt(L);
+% para.v_b = para.v_b / sqrt(L);
 
  %para.v_b = 10 * ones(d,L-1);
  %para.m_qb = zeros(d,L-1);

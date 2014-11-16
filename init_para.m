@@ -12,11 +12,11 @@ para.b_vV = hyperpara.b0d * ones(1, h);
 para.a_vU = hyperpara.a0d * ones(1, h);
 para.b_vU = hyperpara.b0d * ones(1, h);
 
-para.m_mV = zeros(1,h);
+para.m_mV = rand(1,h);
 para.v_mV = 10 * ones(1,h);
 
-para.m_mU = zeros(1,h);
-para.v_mU = 18 * ones(1,h);
+para.m_mU = rand(1,h);
+para.v_mU = 10 * ones(1,h);
 
 para.a_gmacol = hyperpara.a0 * ones(1,d);
 para.b_gmacol = hyperpara.b0 * ones(1,d);
@@ -25,10 +25,28 @@ para.a_gmarow= hyperpara.a0 * ones(1,n);
 para.b_gmarow= hyperpara.b0 * ones(1,n);
 
 para.m_b0 = hyperpara.m_b0;
-para.v_b0 = hyperpara.v0 * ones(1, L-1) / sqrt(d);
+para.v_b0 = hyperpara.v0 * ones(1, L-1);
 
-para.m_b = zeros(d,L-1);
-para.v_b = 10 * ones(d,L-1) / sqrt(d);
+para.m_b = rand(d,L-1);
+para.v_b = 10 * ones(d,L-1) / sqrt(L);
+
+para.m_a = sparse(zeros(n,d));
+para.m_a(O) = rand(nnz(O),1)
+para.v_a = init_v(O,n,d) / sqrt(L);%10 * ones(n,d) + rand(n,d);
+
+para.m_c = sparse(zeros(n,d));
+para.m_c(O) = rand(nnz(O),1);
+para.v_c = init_v(O,n,d) / sqrt(L);%10 * ones(n,d) + rand(n,d);
+
+para.m_u = rand(n,h);
+para.v_u = 10 * ones(n,h) / sqrt(L);
+
+para.m_v = rand(d,h);
+para.v_v = 10 * ones(d,h) / sqrt(L);
+
+para.a_vU = ones(1,h);
+para.b_vU = ones(1,h);
+
 
 %for f1
 para.h_a_vV1 = hyperpara.a0d * ones(1, h);
@@ -67,8 +85,8 @@ para.h_v_b8 = 10 * ones(d,L-1);
 
 %initial Q currently by random
 %[para.m_b, para.v_b] = init_gaussian(para.h_m_b8, para.h_v_b8);
-para.m_b = zeros(d,L-1);
-para.v_b = 10 * ones(d,L-1) / sqrt(d);
+%para.m_b = zeros(d,L-1);
+%para.v_b = ones(d,L-1);
 
 %f9
 para.h_v_mV9 = 10 * ones(d,h);
@@ -101,48 +119,34 @@ para.h_b_vU10 = zeros(n,h);
 % [para.m_mU, para.v_mU] = init_gaussian(para.h_m_mU10, para.h_v_mU10);
 % [para.m_u, para.v_u] = init_gaussian(para.h_m_u10, para.h_v_u10);
 % [para.a_vU, para.b_vU] = init_inverse_gma(para.h_a_vU10, para.h_b_vU10);
-para.m_mU = zeros(1,h);
-para.v_mU = 10 * ones(1,h) - rand(1,h);
-para.m_u = zeros(n,h);
-para.v_u = 10 * ones(n,h) - rand(n,h);
-para.a_vU = ones(1,h);
-para.b_vU = ones(1,h);
+
 
 %f11 not use EP
-para.h_v_v11 = 10 * zeros(d,h);
+para.h_v_v11 = 10 * ones(d,h);
 para.h_m_v11 = zeros(d,h);
 para.h_v_u11 = 10 * ones(n,h);
 para.h_m_u11 = zeros(n,h);
 para.h_v_c11 = init_v(O,n,d);%10 * ones(n,d);
 para.h_m_c11 = sparse(zeros(n,d));
 
-para.m_c = sparse(zeros(n,d));
-para.v_c = init_v(O,n,d) / sqrt(n);%10 * ones(n,d) - rand(n,d);
 
 %f12
- para.h_m_a12 = sparse(zeros(n,d));
- para.h_v_a12 = init_v(O,n,d);%10 * ones(n,d);
- para.h_m_c12 = sparse(zeros(n,d));
- para.h_v_c12 = init_v(O,n,d);%10 * ones(n,d);
- para.h_a_gmarow12 = sparse(zeros(n,d));
- para.h_b_gmarow12 = sparse(zeros(n,d));
- para.h_a_gmacol12 = sparse(zeros(n,d));
- para.h_b_gmacol12 = sparse(zeros(n,d));
- 
- para.m_a = sparse(zeros(n,d));
- para.v_a = init_v(O,n,d) / sqrt(d);%10 * ones(n,d) + rand(n,d);
-  para.m_c = sparse(zeros(n,d));
- para.v_c = init_v(O,n,d);%10 * ones(n,d) + rand(n,d);
- para.a_gmarow = ones(1,n);
- para.b_gmarow = ones(1,n);
- para.a_gmacol = ones(1,d);
- para.b_gmacol = ones(1,d);
+para.h_m_a12 = sparse(zeros(n,d));
+para.h_v_a12 = init_v(O,n,d);%10 * ones(n,d);
+para.h_m_c12 = sparse(zeros(n,d));
+para.h_v_c12 = init_v(O,n,d);%10 * ones(n,d);
+para.h_a_gmarow12 = sparse(zeros(n,d));
+para.h_b_gmarow12 = sparse(zeros(n,d));
+para.h_a_gmacol12 = sparse(zeros(n,d));
+para.h_b_gmacol12 = sparse(zeros(n,d));
+
+
 
 %  [para.m_a, para.v_a] = init_gaussian(para.h_m_a12, para.h_v_a12);
 %  [para.a_gmarow, para.b_gmarow] = init_inverse_gma(para.h_a_gmarow12, para.h_b_gmarow12);
 %  [para.a_gmacol, para.b_gmacol] = init_inverse_gma(para.h_a_gmacol12, para.h_b_gmacol12);
 
- %
+%
 %  para.h_m_b13 = sparse(zeros(n,d,L-1));
 %  para.h_v_b13 = zeros()%10 * ones(n,d,L-1);
 %  para.h_m_a13 = zeros(n,d,L-1);
@@ -153,7 +157,7 @@ para.h_m_a13 = repmat({sparse(zeros(n,d))}, 1, L-1);
 para.h_v_a13 = repmat({init_v(O, n,d)}, 1, L-1);
 
 
- %para.v_b = 10 * ones(d,L-1);
- %para.m_qb = zeros(d,L-1);
- %para.v_a = 10 * ones(n,d);
- %para.m_a = zeros(n,d);
+%para.v_b = 10 * ones(d,L-1);
+%para.m_qb = zeros(d,L-1);
+%para.v_a = 10 * ones(n,d);
+%para.m_a = zeros(n,d);
