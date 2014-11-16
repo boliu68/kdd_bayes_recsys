@@ -58,10 +58,10 @@ for idx = 1:size(nnz_i)
             upd_v_2 = v_a_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 1));
             if upd_v_1 > 0 && upd_v_2 > 0
                 para.h_m_a12(i,j) = m_c_n12ij(i,j);
-                para.h_v_a12(i,j) = v_c_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 1));
+                para.h_v_a12(i,j) = upd_v_1;%v_c_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 1));
                 
                 para.h_m_c12(i,j) = m_a_n12ij(i,j);
-                para.h_v_c12(i,j) = v_a_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 1));
+                para.h_v_c12(i,j) = upd_v_2;%v_a_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 1));
                 
                 %adrow, bdrow, adcol, bdcol
                 adrow = a_gmarow_n12ij(i) * (Z1row ^ 2) / ((a_gmarow_n12ij(i) + 1) * Z * Z2row - a_gmarow_n12ij(i) * (Z1row ^ 2));

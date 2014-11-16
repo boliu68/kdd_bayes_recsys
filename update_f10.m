@@ -14,8 +14,8 @@ b_vU_n10ik = zeros(1,h);
 
 for i = 1:n
     for k = 1:h
-        v_mU_n10ik = (1 ./ ((1 ./ para.v_mV(k)) - (1 ./ para.h_v_mU10(i,:))));
-        m_mU_n10ik = v_mU_n10ik .* (para.m_mU(k) ./ para.v_mU(k) - para.h_m_mU10(i,:) ./ para.h_v_mU10(i,:));
+        v_mU_n10ik = (1 ./ ((1 ./ para.v_mU) - (1 ./ para.h_v_mU10(i,:))));
+        m_mU_n10ik = v_mU_n10ik .* (para.m_mU ./ para.v_mU - para.h_m_mU10(i,:) ./ para.h_v_mU10(i,:));
         
         v_u_n10ik(i,k) = (1 ./ ((1 ./ para.v_u(i,k)) - (1 ./ para.h_v_u10(i,k))));
         m_u_n10ik(i,k) = v_u_n10ik(i,k) .* (para.m_u(i,k) ./ para.v_u(i,k) - para.h_m_u10(i,k) ./ para.h_v_u10(i,k));

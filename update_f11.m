@@ -34,8 +34,8 @@ para.v_c(O) = dot((para.m_u(nnz_i,:)').^2, para.v_v(nnz_j,:)')' + dot(para.v_u(n
 
 %%
 %refine hat f11 avoid negative
-h_v_v11_upd = (1 ./ ((1 ./ para.v_v) + (1 ./ v_v_n11)));
-h_v_u11_upd = (1 ./ ((1 ./ para.v_u) + (1 ./ v_u_n11)));
+h_v_v11_upd = (1 ./ ((1 ./ para.v_v) - (1 ./ v_v_n11)));
+h_v_u11_upd = (1 ./ ((1 ./ para.v_u) - (1 ./ v_u_n11)));
 h_v_c11_upd = (1 ./ ((1 ./ para.v_c) - (1 ./ v_c_n11)));
 
 is_update = h_v_v11_upd > 0;

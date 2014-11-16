@@ -41,12 +41,12 @@ for j = 1:d
             
             para.h_v_mV9(j,k) = 2 * b_vV_n9jk(k) ./ (2 * a_vV_n9jk(k) - 2) + v_v_n9jk(j,k);
             para.h_m_mV9(j,k) = m_v_n9jk(j,k);
-            para.h_v_v9(j,k) = 2 * b_vV_n9jk(k) / (2 * a_vV_n9jk(k) - 2) + v_mV_n9jk(k);
+            para.h_v_v9(j,k) = 2 * b_vV_n9jk(k) ./ (2 * a_vV_n9jk(k) - 2) + v_mV_n9jk(k);
             para.h_m_v9(j,k) = m_mV_n9jk(k);
             
             %a dot and b dot
-            ad = (a_vV_n9jk(k) .* Z1 .* Z1) ./ ((a_vV_n9jk(k) + 1) .* Z .* Z2 - a_vV_n9jk(k) .* Z1 .* Z1);
-            bd = (b_vV_n9jk(k) .* Z .* Z1) ./ ((a_vV_n9jk(k) + 1) .* Z .* Z2 - a_vV_n9jk(k) .* Z1 .* Z1);
+            ad = (a_vV_n9jk(k) .* (Z1.^2)) ./ ((a_vV_n9jk(k) + 1) .* Z .* Z2 - a_vV_n9jk(k) .* (Z1.^2));
+            bd = (b_vV_n9jk(k) .* Z .* Z1) ./ ((a_vV_n9jk(k) + 1) .* Z .* Z2 - a_vV_n9jk(k) .* (Z1.^2));
             
             para.h_a_vV9(j,k) = ad - a_vV_n9jk(k) + 1;
             para.h_b_vV9(j,k) = bd - b_vV_n9jk(k);
