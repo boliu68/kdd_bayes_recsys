@@ -65,9 +65,51 @@ We need to minimize the $KL(Q_{UV}\|S)$
     &= E_{Q_{U,V}} \ln \frac{Q_{U,V}}{S(U,V)}\\
     &= E_{Q_{U,V}} \ln Q_{U,V} - E_{Q_{U,V}} \ln S(U,V)\\
     &= E_U \ln Q_U + E_V \ln Q_V - E_{U,V} \ln S(U,V)\\
-    &=-\sum_{i=1}^n\sum_{k=1}^h ln(2\pi e v_{i,k}^u)/2 - \sum_{j=1}^n\sum_{k=1}^h ln(2\pi e v_{i,k}^v)
+    &=-\sum_{i=1}^n\sum_{k=1}^h ln(2\pi e v_{i,k}^u)/2 - \sum_{j=1}^d\sum_{k=1}^h ln(2\pi e v_{i,k}^v)/2
     \end{split}
 \end{equation}
+\begin{equation}
+    \begin{split}
+    &E_{u_{i}v_{j}}\ln N(\sum_k u_{ik}v_{jk}|m^{c,-11}_{ij}, v^{c,-11}{ij})\\
+    &= -1/2 \ln (2\pi (v^{c,-11})^2) - 1/2(v^{c,-11})^2E(\sum_k u_{ik}v_{jk} - m_{ij}^{c,-11})^2\\
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+    E(\sum_k u_{ik}v_{jk} - m_{ij}^{c,-11})^2 
+&= E(\sum_k u^2_{ik}v_{jk}^2 + \sum_{k\neq t}u_{ik}v_{jk}u_{it}v_{jt} - 2m^{c,-11}_{ij}\sum_k u_{ik}v_{jk} + (m{ij}^{c,-11})^2)\\
+&= \sum_k((m^u_{ik})^2 + (v^u_{jk})^2)((m^v_{ik})^2 + (v^v_{jk})^2) + \sum_{k \neq t}m^u_{ik}m^v_{jk}m^u_{it}m^v_{jt}\\
+&- 2m_{ij}^{c,-11}\sum_k m^u_{ik}v^u_{jk} + (m_{ij}^{c,-11})^2\\
+&= (m_{ij}^{c,-11}- \sum_k m^u_{ik}m^v_{jk})^2 + \sum_k ((v^u_{ik})^2(m^v_{jk})^2 + (v^v_{jk})^2(m^u_{ik})^2+ (v^u_{ik})^2(v^v_{jk})^2)
+    \end{split}
+\end{equation}
+So this term is 
+\begin{equation}
+    \begin{split}
+    &E_{u_{i}v_{j}}\ln N(\sum_k u_{ik}v_{jk}|m^{c,-11}_{ij}, v^{c,-11}_{ij})\\
+    &= -1/2 \ln (2\pi (v^{c,-11})^2) - 
+    \frac{(m_{ij}^{c,-11}- \sum_k m^u_{ik}m^v_{jk})^2 + \sum_k ((v^u_{ik})^2(m^v_{jk})^2 + (v^v_{jk})^2(m^u_{ik})^2+ (v^u_{ik})^2(v^v_{jk})^2)}{2(v^{c,-11}_{ij})^2}
+    \end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+E_{Q_{UV}}S(U,V) &= \sum_{i=1}^n\sum_{k=1}^h(-\frac{(v_{i,k}^{u})^2 + (m_{i,k}^{u})^2 + (m_{i,k}^{{u,-13}})^2 - 2m_{i,k}^um_{i,k}^{u,-13}}{2(v_{i,k}^{{u,-13}})^2} - \frac{1}{2}ln(2\pi (m_{i,k}^{{u,-13}})^2) \\
++&\sum_{j=1}^d\sum_{k=1}^h(-\frac{(v_{j,k}^{v})^2 + (m_{j,k}^{v})^2 + (m_{j,k}^{{v,-13}})^2 - 2m_{j,k}^vm_{j,k}^{v,-13}}{2(v_{j,k}^{{v,-13}})^2} - \frac{1}{2}ln(2\pi (m_{j,k}^{{v,-13}})^2) \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+Obj &=(\sum_{i,j\in O}1/2 \ln (2\pi (v_{i,j}^{c,-11})^2)\\
++& \frac{(m_{ij}^{c,-11}- \sum_k m^u_{ik}m^v_{jk})^2 + \sum_k ((v^u_{ik})^2(m^v_{jk})^2 + (v^v_{jk})^2(m^u_{ik})^2+ (v^u_{ik})^2(v^v_{jk})^2)}{2(v^{c,-11}_{ij})^2})\\
++&\sum_{i=1}^n\sum_{k=1}^h(\frac{(v_{i,k}^{u})^2 + (m_{i,k}^{u})^2 + (m_{i,k}^{{u,-13}})^2 -2m_{i,k}^um_{i,k}^{u,-13}}{2(v_{i,k}^{{u,-13}})^2} + \frac{1}{2}ln(2\pi (m_{i,k}^{{u,-13}})^2) \\
++&\sum_{j=1}^d\sum_{k=1}^h(-\frac{(v_{j,k}^{v})^2 + (m_{j,k}^{v})^2 + (m_{j,k}^{{v,-13}})^2 - 2m_{j,k}^vm_{j,k}^{v,-13}}{2(v_{j,k}^{{v,-13}})^2} + \frac{1}{2}ln(2\pi (m_{j,k}^{{v,-13}})^2)\\
+-&\sum_{i=1}^n\sum_{k=1}^h ln(2\pi e v_{i,k}^u)/2 - \sum_{j=1}^d\sum_{k=1}^h ln(2\pi e v_{i,k}^v)/2
+\end{split}
+\end{equation}
+
 \end{document}
 
 
