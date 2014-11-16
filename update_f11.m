@@ -28,6 +28,15 @@ m_c_n11 = v_c_n11 .* (para.m_c ./ para.v_c - para.h_m_c11 ./ para.h_v_c11);
 obj = objective_func(para, O, m_c_n11, v_c_n11, m_u_n11, v_u_n11, m_v_n11, v_v_n11)
 %Waiting for Update
 
+local_para.v_v_n11 = v_v_n11;
+local_para.m_v_n11 = m_v_n11;
+local_para.v_u_n11 = v_u_n11;
+local_para.m_u_n11 = m_u_n11;
+local_para.v_c_n11 = v_c_n11;
+local_para.m_c_n11 = m_c_n11;
+option.stepsize=0.1;
+option.eps = 1;
+[para.m_u, para.m_v] = f11_gradient_update( para, hyperpara,local_para, option);
 
 para.m_c(O) = dot(para.m_u(nnz_i,:)', para.m_v(nnz_j,:)')';
 para.v_c(O) = dot((para.m_u(nnz_i,:)').^2, para.v_v(nnz_j,:)')' + dot(para.v_u(nnz_i,:)', (para.m_v(nnz_j,:)').^2)' + dot(para.v_u(nnz_i,:)', para.v_v(nnz_j,:)')';
