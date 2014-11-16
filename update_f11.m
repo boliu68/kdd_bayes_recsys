@@ -1,71 +1,54 @@
 function para = update_f11(para, hyperpara, O)
-    
-    d = hyperpara.d;
-    n = hyperpara.n;
-    h = hyperpara.h;
-    L = hyperpara.L;
 
-    v_v_n11 = 10 * ones(d,h);
-    m_v_n11 = zeros(d,h);
-    v_u_n11 = 10 * ones(n,h);
-    m_u_n11 = zeros(n,h);
-    v_c_n11 = 10 * ones(n,d);
-    m_c_n11 = zeros(n,d);
+d = hyperpara.d;
+n = hyperpara.n;
+h = hyperpara.h;
+L = hyperpara.L;
 
-    %udpate f11 based on observation matrix O
-    %%
-    %n * k and d * k
-    [nnz_i, nnz_j, nnz_r] = find(O);
-    
-    for idx = 1:size(nnz_i)
-            i = nnz_i(idx);
-            j = nnz_j(idx);
+v_v_n11 = 10 * ones(d,h);
+m_v_n11 = zeros(d,h);
+v_u_n11 = 10 * ones(n,h);
+m_u_n11 = zeros(n,h);
+v_c_n11 = 10 * ones(n,d);
+m_c_n11 = zeros(n,d);
 
-            v_v_n11(j,:) = (1 ./ ((1 ./ para.v_v(j,:)) - (1 ./ para.h_v_v11(j,:))));
-            m_v_n11(j,:) = v_v_n11(j,:) .* (para.m_v(j,:) ./ para.v_v(j,:) - para.h_m_v11(j,:) ./ para.h_v_v11(j,:));
-            
-            v_u_n11(i,:) = (1 ./ ((1 ./ para.v_u(i,:)) - (1 ./ para.h_v_u11(i,:))));
-            m_u_n11(i,:) = v_u_n11(i,:) .* (para.m_u(i,:) ./ para.v_u(i,:) - para.h_m_u11(i,:) ./ para.h_v_u11(i,:));
-            
-            %%
-            %n * d matrix
-            
-            v_c_n11(i,j) = (1 ./ ((1 ./ para.v_c(i,j)) - (1 ./ para.h_v_c11(i,j))));
-            m_c_n11(i,j) = v_c_n11(i,j) .* (para.m_c(i,j) ./ para.v_c(i,j) - para.h_m_c11(i,j) ./ para.h_v_c11(i,j));
-            
-            %%
-            %upate n * d only for those of O%
-            m_c_old = para.m_c(i,j);
-            v_c_old = para.v_c(i,j);
-            para.m_c(i,j) = (para.m_u(i,:) * para.m_v(j,:)');
-            para.v_c(i,j) = (para.m_u(i,:) .^ 2 * para.v_v(j,:)' + para.v_u(i,:) * (para.m_v(j,:) .^ 2)' + para.v_u(i,:) * para.v_v(j,:)');
-            
-            %%
-            %refine hat f11
-            %avoid negative
+%udpate f11 based on observation matrix O
+[nnz_i, nnz_j, ~] = find(O);
 
-            h_v_c11_upd = (1 ./ ((1 ./ para.v_c(i,j)) - (1 ./ v_c_n11(i,j))));
-            if h_v_c11_upd > 0 %(1 ./ ((1 ./ para.v_c(i,j)) - (1 ./ v_c_n11(i,j)))) > 0
-                
-                h_v_v11_upd = (1 ./ ((1 ./ para.v_v(j,:)) + (1 ./ v_v_n11(j,:))));
-                h_v_u11_upd = (1 ./ ((1 ./ para.v_u(i,:)) + (1 ./ v_u_n11(i,:))));
-                
-                is_update = h_v_v11_upd >0 &  h_v_u11_upd > 0;
-                
-                para.h_v_v11(j, is_update) = h_v_v11_upd(is_update);%(1 ./ ((1 ./ para.v_v(j,is_update)) + (1 ./ v_v_n11(j,is_update))));
-                para.h_m_v11(j, is_update) = para.h_v_v11(j, is_update) .* (para.m_v(j, is_update) ./ para.v_v(j, is_update) - m_v_n11(j, is_update) ./ v_v_n11(j, is_update));
-                
-                para.h_v_u11(i, is_update) = h_v_u11_upd(is_update);%(1 ./ ((1 ./ para.v_u(i, is_update)) + (1 ./ v_u_n11(i, is_update))));
-                para.h_m_u11(i, is_update) = para.h_v_u11(i,is_update) .* (para.m_u(i,is_update) ./ para.v_u(i,is_update) - m_u_n11(i,is_update) ./ v_u_n11(i,is_update));
-                
-                %for i j \in O
-                para.h_v_c11(i,j) = (1 ./ ((1 ./ para.v_c(i,j)) - (1 ./ v_c_n11(i,j))));
-                para.h_m_c11(i,j) = para.h_v_c11(i,j) .* (para.m_c(i,j) ./ para.v_c(i,j) - m_c_n11(i,j) ./ v_c_n11(i,j));
-            else
-                %eliminate the EP update of Q.
-                para.m_c(i,j) = m_c_old;
-                para.v_c(i,j) = v_c_old;
-            end
-    end
-    
+v_v_n11 = (1 ./ ((1 ./ para.v_v) - (1 ./ para.h_v_v11)));
+m_v_n11 = v_v_n11 .* (para.m_v ./ para.v_v - para.h_m_v11 ./ para.h_v_v11);
+
+v_u_n11 = (1 ./ ((1 ./ para.v_u) - (1 ./ para.h_v_u11)));
+m_u_n11 = v_u_n11 .* (para.m_u ./ para.v_u - para.h_m_u11 ./ para.h_v_u11);
+
+v_c_n11 = (1 ./ ((1 ./ para.v_c) - (1 ./ para.h_v_c11)));
+m_c_n11 = v_c_n11 .* (para.m_c ./ para.v_c - para.h_m_c11 ./ para.h_v_c11);
+
+%%
+obj = objective_func(para, O, m_c_n11, v_c_n11, m_u_n11, v_u_n11, m_v_n11, v_v_n11)
+%Waiting for Update
+
+
+para.m_c(O) = dot(para.m_u(nnz_i,:)', para.m_v(nnz_j,:)')';
+para.v_c(O) = dot((para.m_u(nnz_i,:)').^2, para.v_v(nnz_j,:)')' + dot(para.v_u(nnz_i,:)', (para.m_v(nnz_j,:)').^2)' + dot(para.v_u(nnz_i,:)', para.v_v(nnz_j,:)')';
+
+%%
+%refine hat f11 avoid negative
+h_v_v11_upd = (1 ./ ((1 ./ para.v_v) + (1 ./ v_v_n11)));
+h_v_u11_upd = (1 ./ ((1 ./ para.v_u) + (1 ./ v_u_n11)));
+h_v_c11_upd = (1 ./ ((1 ./ para.v_c) - (1 ./ v_c_n11)));
+
+is_update = h_v_v11_upd > 0;
+para.h_v_v11(is_update) = h_v_v11_upd(is_update);%(1 ./ ((1 ./ para.v_v(j,is_update)) + (1 ./ v_v_n11(j,is_update))));
+para.h_m_v11(is_update) = para.h_v_v11(is_update) .* (para.m_v(is_update) ./ para.v_v(is_update) - m_v_n11(is_update) ./ v_v_n11(is_update));
+
+is_update = h_v_u11_upd >0;
+para.h_v_u11(is_update) = h_v_u11_upd(is_update);%(1 ./ ((1 ./ para.v_u(i, is_update)) + (1 ./ v_u_n11(i, is_update))));
+para.h_m_u11(is_update) = para.h_v_u11(is_update) .* (para.m_u(is_update) ./ para.v_u(is_update) - m_u_n11(is_update) ./ v_u_n11(is_update));
+
+is_update = h_v_c11_upd>0;
+para.h_v_c11(is_update) = (1 ./ ((1 ./ para.v_c(is_update)) - (1 ./ v_c_n11(is_update))));
+para.h_m_c11(is_update) = para.h_v_c11(is_update) .* (para.m_c(is_update) ./ para.v_c(is_update) - m_c_n11(is_update) ./ v_c_n11(is_update));
+
+
 end
