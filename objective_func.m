@@ -1,6 +1,14 @@
-function [ obj ] = objective_func(para, O, m_c_n11, v_c_n11, m_u_n11, v_u_n11, m_v_n11, v_v_n11)
+function [ obj ] = objective_func(para, O,local_para)
 %COMPUTE_ENTROPY Summary of this function goes here
 %   Detailed explanation goes here
+
+m_c_n11 = local_para.m_c_n11;
+v_c_n11 = local_para.v_c_n11;
+m_u_n11 = local_para.m_u_n11;
+v_u_n11 = local_para.v_u_n11;
+m_v_n11 = local_para.m_v_n11;
+v_v_n11 = local_para.v_v_n11;
+
 
    [nnz_i, nnz_j, ~] = find(O);
    
