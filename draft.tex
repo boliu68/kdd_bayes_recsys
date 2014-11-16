@@ -1,0 +1,73 @@
+%File: formatting-instruction.tex
+\documentclass[letterpaper]{article}
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\frenchspacing
+\setlength{\pdfpagewidth}{8.5in}
+\setlength{\pdfpageheight}{11in}
+\setcounter{secnumdepth}{0}  
+
+\newcommand{\vect}[1]{\boldsymbol{\mathbf{#1}}} %define a \vect for vector or matrix
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\mL}{\mathcal{L}}
+\newcommand{\mY}{\mathcal{Y}}
+
+\newcommand{\vw}{\vect{w}}
+\newcommand{\vx}{\vect{x}}
+\newcommand{\vf}{\vect{f}}
+\newcommand{\veps}{\vect{\epsilon}}
+\newcommand{\valpha}{\vect{\alpha}}
+\newcommand{\ud}{\text{d}}
+\newcommand{\px}[1]{\vx^{(#1)}}
+\newcommand{\py}[1]{y^{(#1)}}
+\newcommand{\ppi}[1]{\pi^{(#1)}}
+\newcommand{\pmu}[1]{\mu^{(#1)}}
+\newcommand{\pz}[1]{z^{(#1)}}
+\newcommand{\pr}[1]{r^{(#1)}}
+\newcommand{\po}[1]{o^{(#1)}}
+\newcommand{\pvz}[1]{\vz^{(#1)}}
+\newcommand{\ph}[1]{h^{(#1)}}
+\newcommand{\pa}[1]{a^{(#1)}}
+\newcommand{\bPhi}{\vect{\Phi}}
+\newcommand{\bR}{\mathbb{R}}
+
+\newcommand{\tX}{\tilde{X}}
+\newcommand{\tC}{\tilde{C}}
+\newcommand{\vmu}{\vect{\mu}}
+
+\newcommand{\tup}{\bigtriangleup}
+\newcommand{\tdown}{\bigtriangledown}
+ \begin{document}
+% The file aaai.sty is the style file for AAAI Press 
+% proceedings, working notes, and technical reports.
+%
+ \graphicspath{{figure/}}
+
+\title{Update for f11}
+\author{}
+\maketitle
+\begin{equation}
+    S(U,V) = \prod_{ij}N(u_i^Tv_j|m_{i,j}^{c,-11}, v_{i,j}^{c,-11}) \prod_i \prod_k N(u_{i,k}|m_{i,k}^{u,-11}, v_{i,k}^{u,-11} \prod_j \prod_k N(v_{j,k}|m_{j,k}^{v,-11}, v_{j,k}^{v,-11})
+\end{equation}
+\begin{equation}
+    Q_{U,V} = \prod_i \prod_k N(u_{i,k}|m_{i,k}^u, v_{i,k}^u) \prod_j \prod_k N(v_{j,k}|m_{j,k}^v, v_{j,k}^v)
+\end{equation}
+We need to minimize the $KL(Q_{UV}\|S)$
+\begin{equation}
+    \begin{split}
+    KL(Q_{U,V}\|S) 
+    &= E_{Q_{U,V}} \ln \frac{Q_{U,V}}{S(U,V)}\\
+    &= E_{Q_{U,V}} \ln Q_{U,V} - E_{Q_{U,V}} \ln S(U,V)\\
+    &= E_U \ln Q_U + E_V \ln Q_V - E_{U,V} \ln S(U,V)
+    \end{split}
+\end{equation}
+
+\end{document}
+
+
