@@ -31,7 +31,7 @@ para.m_b = rand(d,L-1);
 para.v_b = 10 * ones(d,L-1) / sqrt(L);
 
 para.m_a = sparse(zeros(n,d));
-para.m_a(O) = rand(nnz(O),1)
+para.m_a(O) = rand(nnz(O),1);
 para.v_a = init_v(O,n,d) / sqrt(L);%10 * ones(n,d) + rand(n,d);
 
 para.m_c = sparse(zeros(n,d));
