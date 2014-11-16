@@ -55,7 +55,7 @@ init_para
 % This is the iteration of update
 for iter = 1:max_iter
      disp(['Iteration:',int2str(iter)])
-
+%{
     para = update_f1(para, hyperpara);
     para = update_f2(para, hyperpara);
     para = update_f3(para, hyperpara);
@@ -66,10 +66,12 @@ for iter = 1:max_iter
     para = update_f8(para, hyperpara);
     para = update_f9(para, hyperpara);
     para = update_f10(para, hyperpara);
+     %}
     para = update_f11(para, hyperpara, O);
+    %{
     para = update_f12(para, hyperpara, O, iter);
     para = update_f13(para, hyperpara, O, R);
-
+%}
 end
 
 [pred_entry.row, pred_entry.col, ~] = find(O);
