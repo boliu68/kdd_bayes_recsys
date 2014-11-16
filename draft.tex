@@ -68,6 +68,30 @@ We need to minimize the $KL(Q_{UV}\|S)$
     \end{split}
 \end{equation}
 
+\begin{equation}
+    \begin{split}
+    &E_{u_{i}v_{j}}\ln N(\sum_k u_{ik}v_{jk}|m^{c,-11}_{ij}, v^{c,-11}{ij})\\
+    &= -1/2 \ln (2\pi (v^{c,-11})^2) - 1/2(v^{c,-11})^2E(\sum_k u_{ik}v_{jk} - m_{ij}^{c,-11})^2\\
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+    E(\sum_k u_{ik}v_{jk} - m_{ij}^{c,-11})^2 
+&= E(\sum_k u^2_{ik}v_{jk}^2 + \sum_{k\neq t}u_{ik}v_{jk}u_{it}v_{jt} - 2m^{c,-11}_{ij}\sum_k u_{ik}v_{jk} + (m{ij}^{c,-11})^2)\\
+&= \sum_k((m^u_{ik})^2 + (v^u_{jk})^2)((m^v_{ik})^2 + (v^v_{jk})^2) + \sum_{k \neq t}m^u_{ik}m^v_{jk}m^u_{it}m^v_{jt}\\
+&- 2m_{ij}^{c,-11}\sum_k m^u_{ik}v^u_{jk} + (m_{ij}^{c,-11})^2\\
+&= (m_{ij}^{c,-11}- \sum_k m^u_{ik}m^v_{jk})^2 + \sum_k ((v^u_{ik})^2(m^v_{jk})^2 + (v^v_{jk})^2(m^u_{ik})^2+ (v^u_{ik})^2(v^v_{jk})^2)
+    \end{split}
+\end{equation}
+So this term is 
+\begin{equation}
+    \begin{split}
+    &E_{u_{i}v_{j}}\ln N(\sum_k u_{ik}v_{jk}|m^{c,-11}_{ij}, v^{c,-11}_{ij})\\
+    &= -1/2 \ln (2\pi (v^{c,-11})^2) - 
+    \frac{(m_{ij}^{c,-11}- \sum_k m^u_{ik}m^v_{jk})^2 + \sum_k ((v^u_{ik})^2(m^v_{jk})^2 + (v^v_{jk})^2(m^u_{ik})^2+ (v^u_{ik})^2(v^v_{jk})^2)}{2(v^{c,-11}_{ij})^2}
+    \end{split}
+\end{equation}
 \end{document}
 
 
