@@ -68,16 +68,14 @@ tmp = zeros(size(A));
 for i = 1: L-1
     tmp = tmp + bsxfun(@ge, A, B(i,:));
 end
-B = B';
-U = U';
-V = V';
+
 
 R = tmp + 1;
 R = sparse(R);
 O = sparse(randi([0,1],size(R)) == 1);
 
-A = A';
-C = C';
+
+
 B = B';
 V = V';
 U = U';
