@@ -62,6 +62,7 @@ a_gamrow_t = a_gamrow(sample_row);
 b_gamcol_t = b_gamcol(sample_col);
 a_gamcol_t = a_gamcol(sample_col);
 v_gam = (b_gamrow_t.* b_gamcol_t).*(1./((a_gamrow_t+1).*(a_gamcol_t + a_gamcol_t )));
+v_gam = reshape(v_gam, [L-1,1]);
 
 pred_u = zeros(nPred, L);
 for i = 1:L    
@@ -71,14 +72,14 @@ for i = 1:L
     else
     ind = sub2ind(size(m_b), sample_row, i*ones(size(sample_row)));
     ind3 = sub2ind(size(v_b), sample_col, i*ones(size(sample_col)));
-	zeta1 = (m_b(ind) - m_c_star) .* (v_c_star + v_b(ind3) + v_gam').^(0.5);
+	zeta1 = (m_b(ind) - m_c_star) .* (v_c_star + v_b(ind3) + v_gam).^(0.5);
     end
     if i == 1
 	zeta2 = -inf;
     else 
 	ind = sub2ind(size(m_b), sample_row, (i-1)*ones(size(sample_row)));
 	ind3 = sub2ind(size(v_b), sample_col, (i-1)*ones(size(sample_col)));
-	zeta2 = (m_b(ind) - m_c_star) .* (v_c_star + v_b(ind3) + v_gam').^(0.5);
+	zeta2 = (m_b(ind) - m_c_star) .* (v_c_star + v_b(ind3) + v_gam).^(0.5);
     end
     pred_u(:, i) =  normcdf(zeta1) - normcdf(zeta2);
 end
