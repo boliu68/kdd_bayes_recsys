@@ -46,9 +46,15 @@ para.a_gmacol = 1./gam_col + 1;
 para.b_gmacol = ones(size(para.a_gmacol));
 
 
-v_b = para.v_b;
+%v_b = para.v_b;
 
-%pred_entry.row = [ 4, 5, 6,7];
-%pred_entry.col = [1, 2, 3, 9]; 
+local_para.v_v_n11 = 10 * ones(d,h);
+local_para.m_v_n11 = zeros(d,h);
+local_para.v_u_n11 = 10 * ones(n,h);
+local_para.m_u_n11 = zeros(n,h);
+local_para.v_c_n11 = 10 * ones(n,d);
+local_para.m_c_n11 = zeros(n,d);
 
-%Rpred = predfun(para,hyperpara, pred_entry);
+
+
+[ g_m_u, g_m_v ] = compute_f11_gradent(hyperpara,  para,O, local_para )
