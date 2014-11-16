@@ -110,6 +110,22 @@ Obj &=(\sum_{i,j\in O}1/2 \ln (2\pi (v_{i,j}^{c,-11})^2)\\
 \end{split}
 \end{equation}
 
+
+Now computing the Gradient
+
+Close form
+\begin{align}
+    v_{ik}^u &= [\sum_{j|(i,j)\in O}\frac{(m_{jk}^v)^2 + v_{jk}^v}{v_{ij}^{c,-11}}+ \frac{1}{v_{ik}^{u,-13}}]^{-1}\\
+    v_{jk}^v &= [\sum_{i|(i,j)\in O}\frac{(m_{ik}^u)^2 + v_{ik}^u}{v_{ij}^{c,-11}}+ \frac{1}{v_{jk}^{v,-13}}]^{-1}
+\end{align}
+
+Gradient
+\begin{align}
+    \frac{ \partial Obj}{\partial m_{ik}^u} &
+    = \sum_{j|(i,j\in O)} -\frac{(m_{ij}^{c,-11} - \sum_k m_{ik}^u m_{jk}^v)m_{jk}^v + v_{jk}^{v}m_{ik}^u}{v_{ij}^{c,-11} } + \frac{m_{ik}^u - m_{ik}^{u,-13}}{v_{ik}^{u,-13}}\\
+    \frac{ \partial Obj}{\partial m_{jk}^v} &
+    = \sum_{i|(i,j\in O)} -\frac{(m_{ij}^{c,-11} - \sum_k m_{ik}^u m_{jk}^v)m_{ik}^u + v_{ik}^{u}m_{jk}^v}{v_{ij}^{c,-11} } + \frac{m_{jk}^v - m_{jk}^{v,-13}}{v_{jk}^{v,-13}}
+\end{align}
 \end{document}
 
 
