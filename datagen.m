@@ -1,5 +1,3 @@
-
-
 %This file Generate toy data according to Houlsby2014
 
 %% Parameter Setting
