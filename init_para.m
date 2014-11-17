@@ -6,11 +6,11 @@ h = hyperpara.h;
 L = hyperpara.L;
 
 %Initilization for the total parameters
-para.a_vV = hyperpara.a0d * ones(1, h);
-para.b_vV = hyperpara.b0d * ones(1, h);
+para.a_vV = hyperpara.a0d * ones(1, h) * d;
+para.b_vV = hyperpara.b0d * ones(1, h) * d;
 
-para.a_vU = hyperpara.a0d * ones(1, h);
-para.b_vU = hyperpara.b0d * ones(1, h);
+para.a_vU = hyperpara.a0d * ones(1, h) * n;
+para.b_vU = hyperpara.b0d * ones(1, h) * n;
 
 para.m_mV = rand(1,h);
 para.v_mV = hyperpara.iv * ones(1,h) / (d + 1);
@@ -18,11 +18,11 @@ para.v_mV = hyperpara.iv * ones(1,h) / (d + 1);
 para.m_mU = rand(1,h);
 para.v_mU = hyperpara.iv * ones(1,h) / (n + 1);
 
-para.a_gmacol = hyperpara.a0 * ones(1,d);
-para.b_gmacol = hyperpara.b0 * ones(1,d);
+para.a_gmacol = hyperpara.a0 * ones(1,d) * n;
+para.b_gmacol = hyperpara.b0 * ones(1,d) * n;
 
-para.a_gmarow= hyperpara.a0 * ones(1,n);
-para.b_gmarow= hyperpara.b0 * ones(1,n);
+para.a_gmarow= hyperpara.a0 * ones(1,n) * d;
+para.b_gmarow= hyperpara.b0 * ones(1,n) * d;
 
 para.m_b0 = hyperpara.m_b0;
 para.v_b0 = hyperpara.v0 * ones(1, L-1);
@@ -42,11 +42,7 @@ para.m_u = rand(n,h) - 0.5;
 para.v_u = hyperpara.iv * ones(n,h) / 2;% / sqrt(L);
 
 para.m_v = rand(d,h) - 0.5;
-para.v_v = hyperpara.iv * ones(d,h) / 2;% / sqrt(L);
-
-para.a_vU = ones(1,h);
-para.b_vU = ones(1,h);
-
+para.v_v = hyperpara.iv * ones(d,h) / 2;% / sqrt(L)
 
 %for f1
 para.h_a_vV1 = hyperpara.a0d * ones(1, h);
