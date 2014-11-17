@@ -50,27 +50,28 @@ hyperpara.a0 = 10/2;
 hyperpara.b0 = 10*sqrt(10) /2;
 
 hyperpara.m_b0 = [-6 -2 2 6];
-hyperpara.v0 = 10;
+hyperpara.v0 = 0.1;
 
 max_iter = 50;   %iteration number
 
 %% Initialization should be here
-init_para;
+%init_para;
+load testf8data
 
 for iter = 1:max_iter
     disp(['Iteration:',int2str(iter)])
-    para = update_f1(para, hyperpara);
-    para = update_f2(para, hyperpara);
-    para = update_f3(para, hyperpara);
-    para = update_f4(para, hyperpara);
-    para = update_f5(para, hyperpara);
-    para = update_f6(para, hyperpara);
+    %para = update_f1(para, hyperpara);
+    %para = update_f2(para, hyperpara);
+    %para = update_f3(para, hyperpara);
+    %para = update_f4(para, hyperpara);
+    %para = update_f5(para, hyperpara);
+    %para = update_f6(para, hyperpara);
     para = update_f7(para, hyperpara);
     para = update_f8(para, hyperpara);
-    para = update_f9(para, hyperpara);
-    para = update_f10(para, hyperpara);
-    para = update_f11(para, hyperpara, O, iter);
-    para = update_f12(para, hyperpara, O, iter);
+    %para = update_f9(para, hyperpara);
+    %para = update_f10(para, hyperpara);
+    %para = update_f11(para, hyperpara, O, iter);
+    %para = update_f12(para, hyperpara, O, iter);
     para = update_f13(para, hyperpara, O, R);
     
 end
