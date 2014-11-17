@@ -6,7 +6,7 @@ d = 40; % #Items
 
 L = 5; % #Classes
 
-h = 10;  % The rank of matrix
+h = 3;  % The rank of matrix
 
 %%prior parameters
 

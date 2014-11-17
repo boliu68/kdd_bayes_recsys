@@ -124,9 +124,16 @@ para.h_v_a12 = init_v(O,n,d,hyperpara.iv);%hyperpara.iv * ones(n,d);
 para.h_m_c12 = sparse(zeros(n,d));
 para.h_v_c12 = init_v(O,n,d,hyperpara.iv);%hyperpara.iv * ones(n,d);
 para.h_a_gmarow12 = sparse(zeros(n,d));
+para.h_a_gmarow12(O) = hyperpara.a0;
+
 para.h_b_gmarow12 = sparse(zeros(n,d));
+para.h_b_gmarow12(O) = hyperpara.b0;
+
 para.h_a_gmacol12 = sparse(zeros(n,d));
+para.h_a_gmacol2(O) = hyperpara.a0;
+
 para.h_b_gmacol12 = sparse(zeros(n,d));
+para.h_b_gmacol12(O) = hyperpara.b0;
 
 
 

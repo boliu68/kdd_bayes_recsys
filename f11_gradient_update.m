@@ -16,7 +16,7 @@ for iter = 1: maxIter
     m_v = m_v - stepsize * g_m_v;
 %     m_u = m_u + stepsize * g_m_u;
 %     m_v = m_v + stepsize * g_m_v;
-    %stepsize = stepsize / iter;
+    stepsize = stepsize / iter;
     para.m_u = m_u;
     para.m_v = m_v;
     

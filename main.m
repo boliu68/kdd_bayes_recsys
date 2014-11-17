@@ -23,7 +23,7 @@ clc;
 % hyperpara.L = 5;
 % hyperpara.h = 10;
 
-%datagen;
+% datagen;
 x = load('toy.mat');
 % y = load('para.mat');
 
@@ -50,22 +50,24 @@ hyperpara.a0 = 10/2;
 hyperpara.b0 = 10*sqrt(10) /2;
 
 hyperpara.m_b0 = [-6 -2 2 6];
-hyperpara.v0 = 100;
+hyperpara.v0 = 0.1;
 
-max_iter = 10;   %iteration number
+max_iter = 50;   %iteration number
 
 %% Initialization should be here
 para = init_para(O, hyperpara);
 
 for iter = 1:max_iter
     disp(['Iteration:',int2str(iter)])
-    para = update_f1(para, hyperpara);
-    para = update_f2(para, hyperpara);
-    para = update_f3(para, hyperpara);
-    para = update_f4(para, hyperpara);
-    para = update_f5(para, hyperpara);
-    para = update_f6(para, hyperpara);
-    para = update_f7(para, hyperpara);
+    if iter == 1
+        para = update_f1(para, hyperpara);
+        para = update_f2(para, hyperpara);
+        para = update_f3(para, hyperpara);
+        para = update_f4(para, hyperpara);
+        para = update_f5(para, hyperpara);
+        para = update_f6(para, hyperpara);
+        para = update_f7(para, hyperpara);
+    end
     para = update_f8(para, hyperpara);
     para = update_f9(para, hyperpara);
     para = update_f10(para, hyperpara);
