@@ -25,12 +25,17 @@ clc;
 
 %datagen;
 x = load('toy.mat');
+% y = load('para.mat');
+
 R = x.R;
 O = x.O;
+% para = y.para;
+% hyperpara = y.hyperpara;
 hyperpara.n = 50;
 hyperpara.d = 40;
 hyperpara.L = 5;
 hyperpara.h = 10;
+hyperpara.iv = 10000;
 
 %% Setting hyperparameters
 hyperpara.m_mu = 0;
@@ -53,36 +58,31 @@ max_iter = 10;   %iteration number
 init_para
 
 % This is the iteration of update
-for iter = 1:max_iter
-     disp(['Iteration:',int2str(iter)])
-    para = update_f1(para, hyperpara);
-    para = update_f2(para, hyperpara);
-    para = update_f3(para, hyperpara);
-    para = update_f4(para, hyperpara);
-    para = update_f5(para, hyperpara);
-    para = update_f6(para, hyperpara);
-    para = update_f7(para, hyperpara);
-    para = update_f8(para, hyperpara);
-    para = update_f9(para, hyperpara);
-    para = update_f10(para, hyperpara);
-    para = update_f11(para, hyperpara, O);
-    a = (((1 ./ para.v_c) - (1 ./ para.h_v_c11)));
-    disp('vc')
-    disp(1 ./ para.v_c(2,4))
-    disp('hvc11')
-    disp(1 ./ para.h_v_c11(2,4))
-    disp('vcn11')
-    disp(a(2,4))
-    para = update_f12(para, hyperpara, O, iter);
-    b= (((1 / para.v_c(2,4)) - (1 / para.h_v_c12(2,4))));
-    disp('vc')
-    disp(1/ para.v_c(2,4))
-    disp('hvc12')
-    disp(1/ para.h_v_c12(2,4))
-    disp('vcn12')
-    disp(b)
-    para = update_f13(para, hyperpara, O, R);
-end
+para.v_b_nt = [];
+para.m_b_nt = [];
+para.h_v_bt = [];
+para.h_m_bt = [];
+para.v_bt = [];
+para.m_bt = [];
+para.bta = [];
 
+for iter = 1:max_iter
+    disp(['Iteration:',int2str(iter)])
+%     para = update_f1(para, hyperpara);
+%     para = update_f2(para, hyperpara);
+%     para = update_f3(para, hyperpara);
+%     para = update_f4(para, hyperpara);
+%     para = update_f5(para, hyperpara);
+%     para = update_f6(para, hyperpara);
+     para = update_f7(para, hyperpara);
+     para = update_f8(para, hyperpara);
+%     para = update_f9(para, hyperpara);
+%     para = update_f10(para, hyperpara);
+%     para = update_f11(para, hyperpara, O, iter);
+%     para = update_f12(para, hyperpara, O, iter);
+     para = update_f13(para, hyperpara, O, R);
+     para.m_b0
+
+end
 [pred_entry.row, pred_entry.col, ~] = find(O);
 [ Rpred ] = predfun( para, hyperpara, pred_entry);
