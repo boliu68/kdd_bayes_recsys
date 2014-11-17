@@ -17,6 +17,10 @@ m_a_n13ijk = zeros(n,L-1);
 for idx = 1:length(nnz_i)
     i = nnz_i(idx);
     j = nnz_j(idx);
+    
+    old_vb = para.v_b(j,:);
+    old_mb = para.m_b(j,:);
+    
     for k = 1:L-1
         
         v_b_n13ijk(j,k) = (1 / ((1 / para.v_b(j,k)) - (1 / para.h_v_b13{k}(i,j))));
@@ -58,14 +62,13 @@ for idx = 1:length(nnz_i)
 %                     para.bta = [para.bta, bta];
 %                     para.v_b_nt = [para.v_b_nt, v_b_n13ijk(j,k)];
 %                     para.m_b_nt = [para.m_b_nt, m_b_n13ijk(j,k)];
-%                 end
-                
+%                 end  
+            else
+                para.m_b(j,:) = old_mb;
+                para.v_b(j,:) = old_vb;
+                continue
             end
         end
-%         para.v_b(j,k) = (1 / ((1 / v_b_n13ijk(j,k)) + (1 / para.h_v_b13{k}(i,j))));
-%         para.m_b(j,k) = para.v_b(j,k) * (m_b_n13ijk(j,k) / v_b_n13ijk(j,k) + para.h_m_b13{k}(i,j) / para.h_v_b13{k}(i,j));
-%         para.v_a(i,j) = (1 / ((1 / v_a_n13ijk(i,j)) + (1 / para.h_v_a13{k}(i,j))));
-%         para.m_a(i,j) = para.v_a(i,j) * (m_a_n13ijk(i,j) / v_a_n13ijk(i,j) + para.h_m_a13{k}(i,j) / para.h_v_a13{k}(i,j));
     end
 end
 end

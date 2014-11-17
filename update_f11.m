@@ -63,10 +63,10 @@ local_para.v_u_n11 = v_u_n11;
 local_para.m_u_n11 = m_u_n11;
 local_para.v_c_n11 = v_c_n11;
 local_para.m_c_n11 = m_c_n11;
-option.stepsize=0.0001 / iter;
-option.eps = 1;
+option.stepsize= 0.01 / (iter * 10);
+option.eps = 0;
 option.maxiter = 100;
-[para.m_u, para.m_v] = f11_gradient_update( para, hyperpara,local_para, option, O);
+[para.m_u, para.m_v] = f11_gradient_update(para, hyperpara,local_para, option, O);
 
 para.m_c(O) = dot(para.m_u(nnz_i,:)', para.m_v(nnz_j,:)')';
 old_v_c = para.v_c;

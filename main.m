@@ -34,7 +34,7 @@ O = x.O;
 hyperpara.n = 50;
 hyperpara.d = 40;
 hyperpara.L = 5;
-hyperpara.h = 10;
+hyperpara.h = 3;
 hyperpara.iv = 10000;
 
 %% Setting hyperparameters
@@ -50,12 +50,12 @@ hyperpara.a0 = 10/2;
 hyperpara.b0 = 10*sqrt(10) /2;
 
 hyperpara.m_b0 = [-6 -2 2 6];
-hyperpara.v0 = 10;
+hyperpara.v0 = 100;
 
-max_iter = 50;   %iteration number
+max_iter = 10;   %iteration number
 
 %% Initialization should be here
-init_para;
+para = init_para(O, hyperpara);
 
 for iter = 1:max_iter
     disp(['Iteration:',int2str(iter)])
@@ -72,9 +72,11 @@ for iter = 1:max_iter
     para = update_f11(para, hyperpara, O, iter);
     para = update_f12(para, hyperpara, O, iter);
     para = update_f13(para, hyperpara, O, R);
-    
 end
 [pred_entry.row, pred_entry.col, ~] = find(O);
+%trick
+para.m_b = sort(para.m_b,2);
+%
 [ Rpred ] = predfun( para, hyperpara, pred_entry);
 
 tr_err = rmse(Rpred * [1:5]', R, O)

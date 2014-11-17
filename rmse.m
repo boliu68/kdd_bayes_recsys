@@ -4,5 +4,4 @@ function rmse_err = rmse(prediction, R, O)
 %RMSE
 rmse_err = sqrt(sum((R(O) - prediction).^2) / length(prediction));
 
-
 end
