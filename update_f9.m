@@ -6,11 +6,11 @@ h = hyperpara.h;
 L = hyperpara.L;
 
 v_mV_n9jk = 10 * ones(1,h);
-m_mV_n9jk = rand(1,h);
+m_mV_n9jk = zeros(1,h);
 v_v_n9jk = 10 * ones(d,h);
-m_v_n9jk = rand(d,h);
-a_vV_n9jk = rand(1,h);
-b_vV_n9jk = rand(1,h);
+m_v_n9jk = zeros(d,h);
+a_vV_n9jk = zeros(1,h);
+b_vV_n9jk = zeros(1,h);
 
 for j = 1:d
     for k = 1:h
