@@ -2,8 +2,8 @@ clc;
 clear;
 
 datapath = 'movielens10k.mat';
-% R = importdata(datapath);
-R = randi([0,5],943,1682);
+R = importdata(datapath);
+% R = randi([0,5],943,1682);
 R = sparse(R);
 O = R > 0;
 % 
@@ -13,19 +13,45 @@ d = size(R,2);
 L = 5;
 h = 10;
 
-tr_fraction = 0.01;
+tr_fraction = 0.8;
 
 %random split the Training data and test data
 [nnz_i, nnz_j, ~] = find(O);
-O_tr = sparse(zeros(n,d));
+O_tr = O;
 O_tst = sparse(zeros(n,d));
 
-tr_idx = randsample(nnz(O), 100000);
-tr_id=sub2ind(size(O),nnz_i(tr_idx),nnz_j(tr_idx));
+count = 0;
+while true
+    
+    row_gt2 = zeros(n,1);
+    row_gt2(sum(O,2) > 1) = 1;
+    col_gt2 = zeros(1,d);
+    col_gt2(sum(O) > 1)=1;
+    
+    is_gt2 = sparse(((row_gt2 * col_gt2) == 1) & O_tr);
+    
+    if sum(is_gt2) == 0
+       break 
+    end
+    
+    [nnz_i, nnz_j, ~] = find(is_gt2);
+    idx = randi([1,length(nnz_i)]);
+    
+    O_tst(nnz_i(idx), nnz_j(idx)) = 1;
+    O_tr(nnz_i(idx), nnz_j(idx)) = 1;
+    
+    count = count + 1
+    if count > floor((1 -tr_fraction) * nnz(O))
+       break 
+    end
+end
 
-O_tr(tr_id) = 1;
-O_tr = O_tr == 1;
-O_tst = (O - O_tr) == 1;
+% tr_idx = randsample(nnz(O), floor(tr_fraction * nnz(O)));
+% tr_id=sub2ind(size(O),nnz_i(tr_idx),nnz_j(tr_idx));
+% 
+% O_tr(tr_id) = 1;
+% O_tr = O_tr == 1;
+% O_tst = (O - O_tr) == 1;
 
 hyperpara.n = n;
 hyperpara.d = d;
