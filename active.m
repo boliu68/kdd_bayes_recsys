@@ -16,42 +16,6 @@ h = 10;
 tr_fraction = 0.2;
 
 %random split the Training data and test data
-[nnz_i, nnz_j, ~] = find(O);
-O_tr = sparse(zeros(500,500));%O;
-O_tst = sparse(zeros(n,d));
-% 
-% count = 0;
-% while true
-%     
-%     row_gt2 = zeros(n,1);
-%     row_gt2(sum(O,2) > 1) = 1;
-%     col_gt2 = zeros(1,d);
-%     col_gt2(sum(O) > 1)=1;
-%     
-%     is_gt2 = sparse(((row_gt2 * col_gt2) == 1) & O_tr);
-%     
-%     if sum(is_gt2) == 0
-%        break 
-%     end
-%     
-%     [nnz_i, nnz_j, ~] = find(is_gt2);
-%     idx = randi([1,length(nnz_i)]);
-%     
-%     O_tst(nnz_i(idx), nnz_j(idx)) = 1;
-%     O_tr(nnz_i(idx), nnz_j(idx)) = 1;
-%     
-%     count = count + 1
-%     if count > floor((1 -tr_fraction) * nnz(O))
-%        break 
-%     end
-% end
-
-tr_idx = randsample(nnz(O), floor(tr_fraction * nnz(O)));
-tr_id=sub2ind(size(O),nnz_i(tr_idx),nnz_j(tr_idx));
-
-O_tr(tr_id) = 1;
-O_tr = O_tr == 1;
-O_tst = (O - O_tr) == 1;
 
 hyperpara.n = n;
 hyperpara.d = d;
@@ -77,8 +41,17 @@ hyperpara.v0 = 0.1;
 max_iter = 1;   %iteration number
 
 %% Initialization should be here
-para = init_para(O_tr, hyperpara);
+tr_i = floor(0.9 * n);
+O_act = O(1:tr_i, :);
+R_act = R(1:tr_i, :);
+hyperpara.n = size(O_act, 1);
+hyperpara.d = size(O_act, 2);
+hyperpara.L = L;
+hyperpara.h = h;
 
+para = init_para(O_act, hyperpara);
+
+%Begin to Training
 for iter = 1:max_iter
     disp(['Iteration:',int2str(iter)])
     if iter == 1
@@ -93,15 +66,31 @@ for iter = 1:max_iter
     para = update_f8(para, hyperpara);
     para = update_f9(para, hyperpara);
     para = update_f10(para, hyperpara);
-    para = update_f11(para, hyperpara, O_tr, iter);
-    para = update_f12(para, hyperpara, O_tr, iter);
-    para = update_f13(para, hyperpara, O_tr, R);
+    para = update_f11(para, hyperpara, O_act, iter);
+    para = update_f12(para, hyperpara, O_act, iter);
+    para = update_f13(para, hyperpara, O_act, R);
 end
-[pred_entry.row, pred_entry.col, ~] = find(O_tr);
+[pred_entry.row, pred_entry.col, ~] = find(O_act);
 %trick
 para.m_b = sort(para.m_b,2);
 %
 [ Rpred ] = predfun( para, hyperpara, pred_entry);
 
-tr_err = rmse(Rpred * [1:5]', R, O_tr)
-random_err = rmse(1+4*rand(nnz(O_tr),1), R, O_tr)
+tr_err = rmse(Rpred * [1:5]', R, O_act)
+random_err = rmse(1+4*rand(nnz(O_act),1), R, O_act)
+
+
+%Begin to test Active learning
+for user_id = (tr_i+1):n
+    
+    %resize para
+    
+    
+    %ask for query item
+    
+    para.m_a(O) = rand(nnz(O),1);
+    para.m_c(O) = rand(nnz(O),1);
+    
+    
+    
+end

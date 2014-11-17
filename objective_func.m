@@ -25,7 +25,7 @@ obj2 = sum(sum((para.v_u + para.m_u.^2 - 2*para.m_u.*m_u_n11) ./ (2 * v_u_n11)))
 obj3 = sum(sum((para.v_v + para.m_v.^2 - 2*para.m_v.*m_v_n11) ./ (2 * v_v_n11)));
 obj4 = sum(sum(log(para.v_u)) + sum(log(para.v_v)));
 
-obj = obj1 + obj2 + obj3 - obj4
+obj = obj1 + obj2 + obj3 - obj4;
 
 end
 

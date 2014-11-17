@@ -59,7 +59,7 @@ para = init_para(O, hyperpara);
 
 for iter = 1:max_iter
     disp(['Iteration:',int2str(iter)])
-    if iter == 1
+%     if iter == 1
         para = update_f1(para, hyperpara);
         para = update_f2(para, hyperpara);
         para = update_f3(para, hyperpara);
@@ -67,7 +67,7 @@ for iter = 1:max_iter
         para = update_f5(para, hyperpara);
         para = update_f6(para, hyperpara);
         para = update_f7(para, hyperpara);
-    end
+%     end
     para = update_f8(para, hyperpara);
     para = update_f9(para, hyperpara);
     para = update_f10(para, hyperpara);
