@@ -1,4 +1,4 @@
-function para = update_f11(para, hyperpara, O)
+function para = update_f11(para, hyperpara, O, iter)
 
 d = hyperpara.d;
 n = hyperpara.n;
@@ -24,15 +24,6 @@ m_u_n11 = v_u_n11 .* (para.m_u ./ para.v_u - para.h_m_u11 ./ para.h_v_u11);
 v_c_n11 = (1 ./ ((1 ./ para.v_c) - (1 ./ para.h_v_c11)));
 m_c_n11 = v_c_n11 .* (para.m_c ./ para.v_c - para.h_m_c11 ./ para.h_v_c11);
 
-    disp <<<<<<<<<<<<<<<<<<<<<<<<<<<
-   a = (((1 ./ para.v_c) - (1 ./ para.h_v_c11)));
-    disp('vc')
-    disp(1 ./ para.v_c(2,4))
-    disp('hvc11')
-    disp(1 ./ para.h_v_c11(2,4))
-    disp('vcn11')
-    disp(a(2,4))
-disp >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 %%
 %Compute for v_u, v_v
 
@@ -72,12 +63,13 @@ local_para.v_u_n11 = v_u_n11;
 local_para.m_u_n11 = m_u_n11;
 local_para.v_c_n11 = v_c_n11;
 local_para.m_c_n11 = m_c_n11;
-option.stepsize=0.0001;
+option.stepsize=0.0001 / iter;
 option.eps = 1;
 option.maxiter = 100;
 [para.m_u, para.m_v] = f11_gradient_update( para, hyperpara,local_para, option, O);
 
 para.m_c(O) = dot(para.m_u(nnz_i,:)', para.m_v(nnz_j,:)')';
+old_v_c = para.v_c;
 para.v_c(O) = dot((para.m_u(nnz_i,:)').^2, para.v_v(nnz_j,:)')' + dot(para.v_u(nnz_i,:)', (para.m_v(nnz_j,:)').^2)' + dot(para.v_u(nnz_i,:)', para.v_v(nnz_j,:)')';
 
 %%
@@ -97,6 +89,6 @@ para.h_m_u11(is_update) = para.h_v_u11(is_update) .* (para.m_u(is_update) ./ par
 is_update = h_v_c11_upd>0;
 para.h_v_c11(is_update) = (1 ./ ((1 ./ para.v_c(is_update)) - (1 ./ v_c_n11(is_update))));
 para.h_m_c11(is_update) = para.h_v_c11(is_update) .* (para.m_c(is_update) ./ para.v_c(is_update) - m_c_n11(is_update) ./ v_c_n11(is_update));
-
+para.v_c(~is_update) = old_v_c(~is_update);
 
 end

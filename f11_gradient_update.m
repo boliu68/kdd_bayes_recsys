@@ -16,15 +16,18 @@ for iter = 1: maxIter
     m_v = m_v - stepsize * g_m_v;
 %     m_u = m_u + stepsize * g_m_u;
 %     m_v = m_v + stepsize * g_m_v;
+    stepsize = stepsize / iter;
     para.m_u = m_u;
     para.m_v = m_v;
     
     %check stop condition
-    objvalue =   objective_func(para, O, local_para )
+
+    objvalue =   objective_func(para, O, local_para);
+
     if(iter > 1)
         stop_update = ((old_objvalue - objvalue) < eps);
     end
-    old_objvalue = objvalue
+    old_objvalue = objvalue;
     
     if stop_update ==1
         break;
