@@ -13,7 +13,7 @@ d = size(R,2);
 L = 5;
 h = 10;
 
-tr_fraction = 0.2;
+tr_fraction = 0.1;
 
 %random split the Training data and test data
 
@@ -41,7 +41,7 @@ hyperpara.v0 = 0.1;
 max_iter = 1;   %iteration number
 
 %% Initialization should be here
-tr_i = floor(0.9 * n);
+tr_i = floor(0.5 * n);
 O_act = O(1:tr_i, :);
 R_act = R(1:tr_i, :);
 hyperpara.n = size(O_act, 1);
@@ -84,13 +84,63 @@ random_err = rmse(1+4*rand(nnz(O_act),1), R, O_act)
 for user_id = (tr_i+1):n
     
     %resize para
+    active_para = resize_para()
+    [query_entry] = active_get_entry( para, hyperpara,O, user_id)
     
+    if length(query_entry) < 5
+        continue
+    end
     
+    item_id = query_entry(1:5);
+    o_row = sparse(zeros(1,d));
+    o_row(item_id) = 1;
+    O_act = [sparse(zeros(size(O_act))); o_row];
+    R_act = R(O_act);
     %ask for query item
     
-    para.m_a(O) = rand(nnz(O),1);
-    para.m_c(O) = rand(nnz(O),1);
+    for iter = 1:max_iter
+        disp(['Iteration:',int2str(iter)])
+        active_para = update_f8(active_para, hyperpara);
+        active_para = update_f9(active_para, hyperpara);
+        active_para = update_f10(active_para, hyperpara);
+        active_para = update_f11(active_para, hyperpara, O_act, iter);
+        active_para = update_f12(active_para, hyperpara, O_act, iter);
+        active_para = update_f13(active_para, hyperpara, O_act, R);
+    end
+    [pred_entry.row, pred_entry.col, ~] = find(O_act);
+    %trick
+    active_para.m_b = sort(active_para.m_b,2);
+    %
+    [ Rpred ] = predfun( active_para, hyperpara, pred_entry);
     
+    tr_err = rmse(Rpred * [1:5]', R, O_act)
+
+    %Random
+    rd_para = resize_para()
+
+    item_id = query_entry(randi([1,length(query_entry)],5));
+    o_row = sparse(zeros(1,d));
+    o_row(item_id) = 1;
+    O_act = [sparse(zeros(size(O_act))); o_row];
+    R_act = R(O_act);
+    %ask for query item
+    
+    for iter = 1:max_iter
+        disp(['Iteration:',int2str(iter)])
+        rd_para = update_f8(rd_para, hyperpara);
+        rd_para = update_f9(rd_para, hyperpara);
+        rd_para = update_f10(rd_para, hyperpara);
+        rd_para = update_f11(rd_para, hyperpara, O_act, iter);
+        rd_para = update_f12(rd_para, hyperpara, O_act, iter);
+        rd_para = update_f13(rd_para, hyperpara, O_act, R);
+    end
+    [pred_entry.row, pred_entry.col, ~] = find(O_act);
+    %trick
+    rd_para.m_b = sort(rd_para.m_b,2);
+    %
+    [ Rpred ] = predfun( rd_para, hyperpara, pred_entry);
+    
+    random_err = rmse(Rpred * [1:5]', R, O_act)
     
     
 end

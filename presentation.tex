@@ -1,0 +1,205 @@
+%File: formatting-instruction.tex
+\documentclass{beamer}
+\usetheme{Warsaw}
+
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\frenchspacing
+
+\newcounter{sauvegardeenumi}
+\newcommand{\asuivre}{\setcounter{sauvegardeenumi}{\theenumi}}
+\newcommand{\suite}{\setcounter{enumi}{\thesauvegardeenumi}}
+
+
+\newcommand{\vect}[1]{\boldsymbol{\mathbf{#1}}} %define a \vect for vector or matrix
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\mL}{\mathcal{L}}
+\newcommand{\mY}{\mathcal{Y}}
+
+\newcommand{\vw}{\vect{w}}
+\newcommand{\vb}{\vect{b}}
+\newcommand{\vB}{\vect{B}}
+\newcommand{\vC}{\vect{C}}
+\newcommand{\vx}{\vect{x}}
+\newcommand{\vU}{\vect{U}}
+\newcommand{\vV}{\vect{V}}
+\newcommand{\vu}{\vect{u}}
+\newcommand{\vv}{\vect{v}}
+\newcommand{\vm}{\vect{m}}
+\newcommand{\vR}{\vect{R}}
+\newcommand{\vf}{\vect{f}}
+\newcommand{\vA}{\vect{A}}
+\newcommand{\ud}{\text{d}}
+\newcommand{\bR}{\mathbb{R}}
+
+\newcommand{\tX}{\tilde{X}}
+\newcommand{\tC}{\tilde{C}}
+\newcommand{\tf}{\tilde{f}}
+\newcommand{\mN}{\mathcal{N}}
+
+\newcommand{\mO}{\mathcal{O}}
+\newcommand{\mD}{\mathcal{D}}
+\newcommand{\mQ}{\mathcal{Q}}
+ \begin{document}
+ \title{TBA}
+ \author{Liu Bo \and  Guo Xiawei}
+ \date{11 2014}
+\frame{\titlepage}
+\begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents
+\end{frame}
+\section{introduction}
+\section{Graphical model}
+\begin{frame}
+    \frametitle{Graphical model}
+    We are given a dataset $\mathcal{D} = \{r_{i,j}: 1\le i \le n, 1\le j\le d, r_{i,j} \in \{1,\dots L\}\},(i,j)\in \mO $ of discrete ratings by $n$ users on $d$ items, where the possible rating values are ordinal, $1<\dots<L$. $\mO$ denotes the set of pairs of users and items for which a rating is availatble. We assume that the dataset $\mathcal{D}$ is a sample from a full $n\times d$ rating matrix $\vR$.
+\end{frame}
+\begin{frame}
+    \frametitle{Graphical model}
+\begin{itemize}
+    \item $\vU \in \bR^{n\times h}$  is the user features from the distribution $\prod_{i=1}^n\prod_{k=1}^h\mN(u_{i,k}|m_k^{\vU}, v_k^{\vU})$
+    \item $\vV \in \bR^{d\times h}$  is the user features from the distribution $\prod_{j=1}^d\prod_{k=1}^h\mN(v_{j,k}|m_k^{\vV}, v_k^{\vV})$
+    \item $\vC: p(\vC|\vU, \vV) = \prod_{i,j \in \mO}\delta(c_{i,j} - \vu_i^T \vv_j) $
+\end{itemize}
+\end{frame}
+\begin{frame}
+    \frametitle{Graphical model}
+    \begin{itemize}
+    \item $\vA: \mN(a_{i,j}|c_{i,j}, \gamma_i^{row}, \gamma_j^{col})$, where $\gamma_i^{row}$ and $\gamma_j^{col}$ are factors that specify the noise level in the $i$-th row and the $j$-th column of $\vR$
+    \item $\vB: \vb_j = (b_{j,1},\dots ,b_{j,L-1})$ is the thresholds of partition of the real line into $L-1$ contiguous intervals from the distribution $p(\vb_j|\vb_0) = \prod^{L-1}_{k=1}\mN(b_{j,k}|b_{0,k}, v_0)$
+    \item $\vR: p(r_{i,j}|a_{i,j}, \vb_j) = \prod^{L-1}_{k=1}\Theta[\text{sgn}(r_{i,j}-k-0.5)(a_{i,j} - b_{j,k})]$ is the rating of user $i$ on item $j$
+\end{itemize}
+\end{frame}
+\begin{frame}
+    \frametitle{Graphical model}
+\begin{itemize}
+    \item $\vm^{\vU}, \vm^{\vV}$ have a Gaussian prior distribution and $\vv^{\vU}, \vv^{\vV}$ take Inverse-Gamma distribution as prior 
+    \item $\vb_0$ takes Gaussian distribution as prior
+    \item $\gamma^{row} and \gamma^{col}$ take Inverse-Gamma distribution as prior
+\end{itemize}
+\end{frame}
+\begin{frame}
+    \frametitle{Graphical model}
+    We denote all variables as $\Xi = \{\vU, \vV, \vB, \vA, \vC, \gamma^{row}, \gamma^{col}, \vb_0, \vm^{\vU},
+    \vm^{\vV}, \vv^{\vV}, \vv^{\vU}\}$, the posterior distribtuion can be written as
+    \begin{equation*}
+	\begin{split}
+	&p(\Xi|\vR^{\mathcal{O}}) \\
+	&= p(\vR^{\mathcal{O}}|\vA, \vB) p(\vA|\vC, \gamma^{row}, \gamma^{col})p(\vC|\vU, \vV)\\
+	&p(\vU|\vm^{\vU}, \vm^{\vU})p(\vV|\vm^{\vV}, \vm^{\vV})p(\vB|\vb_0)p(\vb_0)\\
+	&p(\gamma^{row})p(\gamma^{col})p(\vm^{\vU})p(\vm^{\vV})p(\vv^{\vU})p(\vv^{\vV})[p(\vR^{\mathcal{O}})]^{-1}
+	\end{split}
+    \end{equation*}
+\end{frame}
+\begin{frame}
+    \frametitle{Graphical model}
+    The graphical model is as following:
+    \begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{graphical}
+    \end{figure}
+\end{frame}
+\section{Expectation Propogation}
+\begin{frame}
+    \frametitle{Expectation Propogation}
+    This model is complex, so approximate inference is used. Expectation Propogation (EP) is used in this model.
+\end{frame}
+\begin{frame}
+    \frametitle{Expectation Propogation}
+    We are given a joint distribution over observed data $\mathcal{D}$ and stochastic variables $\theta$ in the form of a product of factors
+    \begin{equation*}
+	p(\mD, \theta) = \prod_i f_i (\theta)
+    \end{equation*}
+    and we wish to approximate the posterior distribution $p(\theta|\mD)$ by a distribtuion of the form 
+    \begin{equation*}
+	q(\theta) = \frac{1}{Z}\prod_i \tf_i(\theta)
+    \end{equation*}
+\end{frame}
+\begin{frame}
+    \frametitle{Expectation Propogation}
+    EP will follow these steps:
+    \begin{enumerate}
+	\item Initialize all of the approximating factors $\tf_i(\theta)$	
+	\item Initialize the posterior approximation by setting 
+	    \begin{equation*}
+		q(\theta) \propto \prod_i \tf_i(\theta)
+	    \end{equation*}
+	    \asuivre
+    \end{enumerate}
+\end{frame}
+\begin{frame}
+    \begin{enumerate}
+	    \suite
+	\item Until convergence:
+	    \begin{enumerate}
+		\item Choose a factor $\tf_j(\theta)$ to refine
+		\item Remove $\tf_j (\theta)$ from the posterior by division 
+		    \begin{equation*}
+			q^{-j}(\theta) = \frac{q(\theta)}{\tf_j(\theta)}
+		    \end{equation*}
+		\item Evaluate the new posterior by setting the suffient statistics (moments) of $q^{new}(\theta)$ equal to those of $q^{-j}(\theta)f_j(\theta)$, including evaluation of the normalization constant
+		    \begin{equation*}
+			Z_j = \int q^{-j}(\theta)f_j(\theta)d\theta
+		    \end{equation*}
+		\item Evaluate and store the new factor 
+		    \begin{equation*}
+			\tf_j(\theta) = Z_j \frac{q^{new}(\theta)}{q^{-j}(\theta)}
+		    \end{equation*}
+	    \end{enumerate}
+	\item Evaluate the approximation to the model evidence
+	    \begin{equation*}
+		p(\mD) \sim \int \prod_i \tf_i(\theta)d\theta
+	    \end{equation*}
+    \end{enumerate}
+\end{frame}
+\section{EP solver}
+\begin{frame}
+    \frametitle{EP solver}
+    Using the EP framework, the posterior distribution can be factorized into 13 components accordind to different variables.  We than use a parametric distribution to approximate the posterior:
+\end{frame}
+\begin{frame}
+    \frametitle{EP solver}
+    \begin{equation*}
+	\begin{split}
+	&\mQ(\Xi) \\
+	&= \prod_{i=1}^d \prod_{k=1}^{L-1} \mN(b_{i,k}|m_{i,k}^b, v_{i,k}^b)\prod_{i=1}^d \prod_{(i,j)\in \mO} \mN(a_{i,j}|m_{i,j}^a, v_{i,j}^a)\\
+	&\prod_{(i,j)\in \mO} \mN(c_{i,j}|m_{i,j}^c, v_{i,j}^c)  \prod_{i=1}^n \prod_{k=1}^{h} \mN(u_{i,k}|m_{i,k}^u, v_{i,k}^u) \prod_{j=1}^d \prod_{k=1}^{h} \mN(v_{j,k}|m_{j,k}^v, v_{i,k}^v)\\
+	&\prod^{L-1}_{k=1}\mN(b_{0,k}|m_k^{b_0}, v_k^{b_0})\prod^{h}_{k=1}\mN(m_k^{U}|m_k^{m^U}, v_k^{m^U})\mN(m_k^{V}|m_k^{m^V}, v_k^{m^V})
+	\end{split}
+    \end{equation*}
+\end{frame}
+\begin{frame}
+    \frametitle{EP solver}
+    \begin{equation*}
+	\begin{split}
+	    & \prod_{k=1}^h \mathcal{IG}(v_k^U|a_k^{v_U}, b_k^{v_U})\prod_{k=1}^h \mathcal{IG}(v_k^V|a_k^{v_V}, b_k^{v_V})\\
+	    &\prod_{i=1}^n \mathcal{IG}(\gamma_i^{row}|a_i^{row}, b_i^{row})\prod_{j=1}^d\mathcal{IG}(\gamma_j^{col}|a_j^{col}, b_j^{col})
+	\end{split}
+    \end{equation*}
+\end{frame}
+\begin{frame}
+    \frametitle{EP solver}
+    Than the distribution can be splited into 13 factors. These factors have the same functional form as $\mQ(\Xi)$. Then we follow the framwork of EP to infer these parameters. The details are very complex and is omitted here.
+\end{frame}
+\begin{frame}
+   \frametitle {Predictive Distribuion}
+   Given the approximation to the posterior, the predivtive progability of a new entry $r_{i,j}^\star$can be computed and approximated as
+   \begin{equation*}
+       p(r_{i,j}^\star|\vR^{\mO}) \approx \Phi(\zeta(r^{\star}_{i,j})) - \Phi(\zeta(r_{i,j}^\star)-1)
+   \end{equation*}
+   where  $\zeta(r_{i,j}^\star) = (m^b_{i,r_{i,j}^\star} - m^{c,\star}_{i,j} )(v_{i,j}^{c,\star}+v^b_{j,r^\star_{i,j}}+v_{i,j}^\gamma)^{-0.5}$
+\end{frame}
+\section{Active Learning}
+\section{Experimental Result}
+
+
+\end{document}
+
+
