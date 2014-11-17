@@ -1,6 +1,6 @@
-
-
 datapath = 'movielens10k.mat';
+
+
 R = importdata(datapath);
 R = sparse(R);
 O = R > 0;
@@ -19,16 +19,11 @@ O_tr = sparse(zeros(n,d));
 O_tst = sparse(zeros(n,d));
 
 tr_idx = randsample(nnz(O), tr_fraction * nnz(O));
-tr_id = zeros(1,nnz(O));
+tr_id=sub2ind(size(O),nnz_i(tr_idx),nnz_j(tr_idx));
 
-tr_id(tr_idx) = 1;
-tr_id = tr_id == 1;
-tst_id = ~tr_id;
-
-O_tr(nnz_i(tr_id),nnz_j(tr_id)) = 1;
-O_tst(nnz_i(tst_id),nnz_j(tst_id))=1;
+O_tr(tr_id) = 1;
 O_tr = O_tr == 1;
-O_tst = O_tst == 1;
+O_tst = O - O_tr;
 
 hyperpara.n = n;
 hyperpara.d = d;
@@ -69,13 +64,13 @@ for iter = 1:max_iter
     para = update_f8(para, hyperpara);
     para = update_f9(para, hyperpara);
     para = update_f10(para, hyperpara);
-    para = update_f11(para, hyperpara, O);
-    para = update_f12(para, hyperpara, O, iter);
-    para = update_f13(para, hyperpara, O, R);
+    para = update_f11(para, hyperpara, O_tr);
+    para = update_f12(para, hyperpara, O_tr, iter);
+    para = update_f13(para, hyperpara, O_tr, R);
 
 end
 
-[pred_entry.row, pred_entry.col, ~] = find(O);
+[pred_entry.row, pred_entry.col, ~] = find(O_tst);
 [ Rpred ] = predfun( para, hyperpara, pred_entry);
 %Test data
 

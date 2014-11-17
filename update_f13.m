@@ -50,8 +50,6 @@ for idx = 1:size(nnz_i)
 %         para.m_b(j,k) = para.v_b(j,k) * (m_b_n13ijk(j,k) / v_b_n13ijk(j,k) + para.h_m_b13{k}(i,j) / para.h_v_b13{k}(i,j));
 %         para.v_a(i,j) = (1 / ((1 / v_a_n13ijk(i,j)) + (1 / para.h_v_a13{k}(i,j))));
 %         para.m_a(i,j) = para.v_a(i,j) * (m_a_n13ijk(i,j) / v_a_n13ijk(i,j) + para.h_m_a13{k}(i,j) / para.h_v_a13{k}(i,j));
-        
-        
     end
 end
 end

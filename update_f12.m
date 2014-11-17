@@ -45,7 +45,6 @@ for idx = 1:size(nnz_i)
         std_value1col = v_a_n12ij(i,j) + v_c_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 2));
         std_value2col = v_a_n12ij(i,j) + v_c_n12ij(i,j) + b_gmarow_n12ij(i) * b_gmacol_n12ij(j) / ((a_gmarow_n12ij(i) + 1) * (a_gmacol_n12ij(j) + 3));
         
-        
         Z = normpdf(m_a_n12ij(i,j), mean_value, sqrt(std_value));
         Z1row = normpdf(m_a_n12ij(i,j), mean_value, sqrt(std_value1row));
         Z2row = normpdf(m_a_n12ij(i,j), mean_value, sqrt(std_value2row));
@@ -75,7 +74,7 @@ for idx = 1:size(nnz_i)
                 
                 para.h_a_gmacol12(i,j) = adcol - a_gmacol_n12ij(j) + 1;
                 para.h_b_gmacol12(i,j) = bdcol - b_gmacol_n12ij(j);
- 
+                
                 %recompute Q
                 para.v_a(i,j) = (1 / ((1 / v_a_n12ij(i,j)) + (1 / para.h_v_a12(i,j))));
                 para.m_a(i,j) = para.v_a(i,j) * (m_a_n12ij(i,j) / v_a_n12ij(i,j) + para.h_m_a12(i,j) / para.h_v_a12(i,j));
@@ -93,5 +92,4 @@ for idx = 1:size(nnz_i)
     end
     
 end
-
 end

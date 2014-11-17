@@ -23,10 +23,10 @@ clc;
 % hyperpara.L = 5;
 % hyperpara.h = 10;
 
-datagen;
-% x = load('test.mat');
-% R = x.R;
-% O = x.O;
+%datagen;
+x = load('toy.mat');
+R = x.R;
+O = x.O;
 hyperpara.n = 50;
 hyperpara.d = 40;
 hyperpara.L = 5;
@@ -55,7 +55,6 @@ init_para
 % This is the iteration of update
 for iter = 1:max_iter
      disp(['Iteration:',int2str(iter)])
-
     para = update_f1(para, hyperpara);
     para = update_f2(para, hyperpara);
     para = update_f3(para, hyperpara);
@@ -67,9 +66,22 @@ for iter = 1:max_iter
     para = update_f9(para, hyperpara);
     para = update_f10(para, hyperpara);
     para = update_f11(para, hyperpara, O);
+    a = (((1 ./ para.v_c) - (1 ./ para.h_v_c11)));
+    disp('vc')
+    disp(1 ./ para.v_c(2,4))
+    disp('hvc11')
+    disp(1 ./ para.h_v_c11(2,4))
+    disp('vcn11')
+    disp(a(2,4))
     para = update_f12(para, hyperpara, O, iter);
+    b= (((1 / para.v_c(2,4)) - (1 / para.h_v_c12(2,4))));
+    disp('vc')
+    disp(1/ para.v_c(2,4))
+    disp('hvc12')
+    disp(1/ para.h_v_c12(2,4))
+    disp('vcn12')
+    disp(b)
     para = update_f13(para, hyperpara, O, R);
-
 end
 
 [pred_entry.row, pred_entry.col, ~] = find(O);

@@ -44,7 +44,7 @@ for i = 1: h
 end
 tmp2 = (m_u - m_u_11)./v_u_11;
 
-g_m_u = tmp + tmp2;
+g_m_u = -tmp + tmp2;
 
 
 tmp1 = m_c_11 - mumv;
@@ -59,9 +59,7 @@ end
 
 tmp2 = (m_v - m_v_11)./v_v_11;
 
-g_m_v = tmp + tmp2;
-
-
+g_m_v = -tmp + tmp2;
 
 end
 

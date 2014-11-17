@@ -65,7 +65,7 @@ v_gam = (b_gamrow_t.* b_gamcol_t).*(1./((a_gamrow_t+1).*(a_gamcol_t + a_gamcol_t
 v_gam = reshape(v_gam, [L-1,1]);
 
 pred_u = zeros(nPred, L);
-for i = 1:L    
+for i = 1:L
     
     if i == 5
 	zeta1 = inf;

@@ -24,19 +24,58 @@ m_u_n11 = v_u_n11 .* (para.m_u ./ para.v_u - para.h_m_u11 ./ para.h_v_u11);
 v_c_n11 = (1 ./ ((1 ./ para.v_c) - (1 ./ para.h_v_c11)));
 m_c_n11 = v_c_n11 .* (para.m_c ./ para.v_c - para.h_m_c11 ./ para.h_v_c11);
 
+    disp <<<<<<<<<<<<<<<<<<<<<<<<<<<
+   a = (((1 ./ para.v_c) - (1 ./ para.h_v_c11)));
+    disp('vc')
+    disp(1 ./ para.v_c(2,4))
+    disp('hvc11')
+    disp(1 ./ para.h_v_c11(2,4))
+    disp('vcn11')
+    disp(a(2,4))
+disp >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 %%
-obj = objective_func(para, O, m_c_n11, v_c_n11, m_u_n11, v_u_n11, m_v_n11, v_v_n11)
-%Waiting for Update
+%Compute for v_u, v_v
 
+m_v_t = para.m_v(nnz_j,:);
+m_u_t = para.m_u(nnz_i,:);
+v_v_t = para.v_v(nnz_j,:);
+v_u_t = para.v_u(nnz_i,:);
+v_c_n11_t = v_c_n11(O);
+
+tmp1 = bsxfun(@rdivide, (m_v_t.^2 + v_v_t),  v_c_n11_t);
+tmp2 = ones(n,h);
+for i = 1:h
+    tmp2(:,i) = accumarray(nnz_i, tmp1(:,i), [n,1]);
+end
+tmp3 = 1./v_u_n11;
+
+old_v_u = para.v_u;
+para.v_u = 1./(tmp2 + tmp3);
+para.v_u(para.v_u < 0) = old_v_u(para.v_u < 0);
+
+
+tmp1 = bsxfun(@rdivide,(m_u_t.^2 + v_u_t), v_c_n11_t);
+tmp2 = ones(d,h);
+for i = 1:h
+    tmp2(:,i) = accumarray(nnz_j, tmp1(:,i), [d,1]);
+end
+tmp3 = 1./v_v_n11;
+
+old_v_v = para.v_v;
+para.v_v = 1./(tmp2 + tmp3);
+para.v_v(para.v_v < 0) = old_v_v(para.v_v < 0);
+
+%Waiting for Update
 local_para.v_v_n11 = v_v_n11;
 local_para.m_v_n11 = m_v_n11;
 local_para.v_u_n11 = v_u_n11;
 local_para.m_u_n11 = m_u_n11;
 local_para.v_c_n11 = v_c_n11;
 local_para.m_c_n11 = m_c_n11;
-option.stepsize=0.1;
+option.stepsize=0.0001;
 option.eps = 1;
-[para.m_u, para.m_v] = f11_gradient_update( para, hyperpara,local_para, option);
+option.maxiter = 100;
+[para.m_u, para.m_v] = f11_gradient_update( para, hyperpara,local_para, option, O);
 
 para.m_c(O) = dot(para.m_u(nnz_i,:)', para.m_v(nnz_j,:)')';
 para.v_c(O) = dot((para.m_u(nnz_i,:)').^2, para.v_v(nnz_j,:)')' + dot(para.v_u(nnz_i,:)', (para.m_v(nnz_j,:)').^2)' + dot(para.v_u(nnz_i,:)', para.v_v(nnz_j,:)')';
