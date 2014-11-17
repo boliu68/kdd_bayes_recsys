@@ -11,7 +11,7 @@ clc;
 % hyperpara.d = 5;
 % hyperpara.L = 5;
 % hyperpara.h = 3;
-% 
+%
 % %Test for syntax
 % R = sparse(randi(5, hyperpara.n, hyperpara.d));
 % O = sparse(randi([0,1], hyperpara.n, hyperpara.d) == 1);
@@ -50,39 +50,32 @@ hyperpara.a0 = 10/2;
 hyperpara.b0 = 10*sqrt(10) /2;
 
 hyperpara.m_b0 = [-6 -2 2 6];
-hyperpara.v0 = 0.1;
+hyperpara.v0 = 10;
 
-max_iter = 10;   %iteration number
+max_iter = 50;   %iteration number
 
 %% Initialization should be here
-init_para
-
-% This is the iteration of update
-para.v_b_nt = [];
-para.m_b_nt = [];
-para.h_v_bt = [];
-para.h_m_bt = [];
-para.v_bt = [];
-para.m_bt = [];
-para.bta = [];
+init_para;
 
 for iter = 1:max_iter
     disp(['Iteration:',int2str(iter)])
-%     para = update_f1(para, hyperpara);
-%     para = update_f2(para, hyperpara);
-%     para = update_f3(para, hyperpara);
-%     para = update_f4(para, hyperpara);
-%     para = update_f5(para, hyperpara);
-%     para = update_f6(para, hyperpara);
-     para = update_f7(para, hyperpara);
-     para = update_f8(para, hyperpara);
-%     para = update_f9(para, hyperpara);
-%     para = update_f10(para, hyperpara);
-%     para = update_f11(para, hyperpara, O, iter);
-%     para = update_f12(para, hyperpara, O, iter);
-     para = update_f13(para, hyperpara, O, R);
-     para.m_b0
-
+    para = update_f1(para, hyperpara);
+    para = update_f2(para, hyperpara);
+    para = update_f3(para, hyperpara);
+    para = update_f4(para, hyperpara);
+    para = update_f5(para, hyperpara);
+    para = update_f6(para, hyperpara);
+    para = update_f7(para, hyperpara);
+    para = update_f8(para, hyperpara);
+    para = update_f9(para, hyperpara);
+    para = update_f10(para, hyperpara);
+    para = update_f11(para, hyperpara, O, iter);
+    para = update_f12(para, hyperpara, O, iter);
+    para = update_f13(para, hyperpara, O, R);
+    
 end
 [pred_entry.row, pred_entry.col, ~] = find(O);
 [ Rpred ] = predfun( para, hyperpara, pred_entry);
+
+tr_err = rmse(Rpred * [1:5]', R, O)
+random_err = rmse(1+4*rand(nnz(O),1), R, O)
