@@ -47,7 +47,7 @@
 \newcommand{\mD}{\mathcal{D}}
 \newcommand{\mQ}{\mathcal{Q}}
  \begin{document}
- \title{TBA}
+ \title{Robust Ordinal Matrix Factorization}
  \author{Liu Bo \and  Guo Xiawei}
  \date{11 2014}
 \frame{\titlepage}
@@ -60,6 +60,14 @@
 \begin{frame}
     \frametitle{Graphical model}
     We are given a dataset $\mathcal{D} = \{r_{i,j}: 1\le i \le n, 1\le j\le d, r_{i,j} \in \{1,\dots L\}\},(i,j)\in \mO $ of discrete ratings by $n$ users on $d$ items, where the possible rating values are ordinal, $1<\dots<L$. $\mO$ denotes the set of pairs of users and items for which a rating is availatble. We assume that the dataset $\mathcal{D}$ is a sample from a full $n\times d$ rating matrix $\vR$.
+\end{frame}
+\begin{frame}
+    \frametitle{Graphical model}
+    The graphical model is as following:
+    \begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{graphical}
+    \end{figure}
 \end{frame}
 \begin{frame}
     \frametitle{Graphical model}
@@ -97,14 +105,6 @@
 	&p(\gamma^{row})p(\gamma^{col})p(\vm^{\vU})p(\vm^{\vV})p(\vv^{\vU})p(\vv^{\vV})[p(\vR^{\mathcal{O}})]^{-1}
 	\end{split}
     \end{equation*}
-\end{frame}
-\begin{frame}
-    \frametitle{Graphical model}
-    The graphical model is as following:
-    \begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{graphical}
-    \end{figure}
 \end{frame}
 \section{Expectation Propogation}
 \begin{frame}
