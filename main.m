@@ -24,7 +24,7 @@ clc;
 % hyperpara.h = 10;
 
 % datagen;
-x = load('toy.mat');
+% x = load('toy.mat');
 % y = load('para.mat');
 
 R = x.R;
@@ -50,25 +50,12 @@ hyperpara.a0 = 10/2;
 hyperpara.b0 = 10*sqrt(10) /2;
 
 hyperpara.m_b0 = [-6 -2 2 6];
-hyperpara.v0 = 0.1;
+hyperpara.v0 = 1000;
 
-max_iter = 50;   %iteration number
+max_iter = 10;   %iteration number
 
 %% Initialization should be here
-<<<<<<< HEAD
-%init_para;
-load testf8data
 
-for iter = 1:max_iter
-    disp(['Iteration:',int2str(iter)])
-    %para = update_f1(para, hyperpara);
-    %para = update_f2(para, hyperpara);
-    %para = update_f3(para, hyperpara);
-    %para = update_f4(para, hyperpara);
-    %para = update_f5(para, hyperpara);
-    %para = update_f6(para, hyperpara);
-    para = update_f7(para, hyperpara);
-=======
 para = init_para(O, hyperpara);
 
 for iter = 1:max_iter
@@ -81,17 +68,12 @@ for iter = 1:max_iter
         para = update_f5(para, hyperpara);
         para = update_f6(para, hyperpara);
         para = update_f7(para, hyperpara);
-<<<<<<< HEAD
 %     end
-=======
-    end
->>>>>>> b5952fe0bcaa0c6f367a4d2db97f886aa35020a2
->>>>>>> ab871959e9154d16fab66bf044c1824436361ccf
     para = update_f8(para, hyperpara);
-    %para = update_f9(para, hyperpara);
-    %para = update_f10(para, hyperpara);
-    %para = update_f11(para, hyperpara, O, iter);
-    %para = update_f12(para, hyperpara, O, iter);
+    para = update_f9(para, hyperpara);
+    para = update_f10(para, hyperpara);
+    para = update_f11(para, hyperpara, O, iter);
+    para = update_f12(para, hyperpara, O, iter);
     para = update_f13(para, hyperpara, O, R);
 end
 [pred_entry.row, pred_entry.col, ~] = find(O);

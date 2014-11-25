@@ -6,11 +6,11 @@ h = hyperpara.h;
 L = hyperpara.L;
 
 %Initilization for the total parameters
-para.a_vV = ones(1, h) * d;
-para.b_vV = ones(1, h) * d;
+para.a_vV = 0.0001 * ones(1, h) * d;
+para.b_vV = 0.0001 * ones(1, h) * d;
 
-para.a_vU = ones(1, h) * n;
-para.b_vU = ones(1, h) * n;
+para.a_vU = 0.0001 * ones(1, h) * n;
+para.b_vU = 0.0001 * ones(1, h) * n;
 
 para.m_mV = rand(1,h);
 para.v_mV = hyperpara.iv * ones(1,h) / (d + 1);
