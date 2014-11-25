@@ -3,7 +3,11 @@ clear;
 
 datapath = 'movielens10k.mat';
 R = importdata(datapath);
+<<<<<<< HEAD
 % R = randi([0,5],200,200);
+=======
+%R = randi([0,5],500,500);
+>>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
 R = sparse(R);
 O = R > 0;
 % 
@@ -13,13 +17,21 @@ d = size(R,2);
 L = 5;
 h = 500;
 
+<<<<<<< HEAD
 tr_fraction = 0.95;
+=======
+tr_fraction = 0.8;
+>>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
 
 %random split the Training data and test data
 [nnz_i, nnz_j, ~] = find(O);
 O_tr = O;
 O_tst = sparse(zeros(n,d));
+<<<<<<< HEAD
 
+=======
+% 
+>>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
 count = 0;
 while true
     
@@ -38,9 +50,15 @@ while true
     idx = randi([1,length(nnz_i)]);
     
     O_tst(nnz_i(idx), nnz_j(idx)) = 1;
+<<<<<<< HEAD
     O_tr(nnz_i(idx), nnz_j(idx)) = 0;
     
     count = count + 1;
+=======
+    O_tr(nnz_i(idx), nnz_j(idx)) = 1;
+    
+    count = count + 1
+>>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
     if count > floor((1 -tr_fraction) * nnz(O))
        break 
     end
@@ -50,14 +68,23 @@ end
 % tr_id=sub2ind(size(O),nnz_i(tr_idx),nnz_j(tr_idx));
 % 
 % O_tr(tr_id) = 1;
+<<<<<<< HEAD
 O_tr = O_tr == 1;
 O_tst = (O - O_tr) == 1;
+=======
+% O_tr = O_tr == 1;
+% O_tst = (O - O_tr) == 1;
+>>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
 
 hyperpara.n = n;
 hyperpara.d = d;
 hyperpara.L = L;
 hyperpara.h = h;
+<<<<<<< HEAD
 hyperpara.iv = 100000;
+=======
+hyperpara.iv = 1000000;
+>>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
 
 %% Setting hyperparameters
 hyperpara.m_mu = 0;
@@ -74,7 +101,11 @@ hyperpara.b0 = 10*sqrt(10) /2;
 hyperpara.m_b0 = [-6 -2 2 6];
 hyperpara.v0 = 10000;
 
+<<<<<<< HEAD
 max_iter = 3;   %iteration number
+=======
+max_iter = 10;   %iteration number
+>>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
 
 %% Initialization should be here
 para = init_para(O_tr, hyperpara);
