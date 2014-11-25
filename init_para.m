@@ -6,11 +6,11 @@ h = hyperpara.h;
 L = hyperpara.L;
 
 %Initilization for the total parameters
-para.a_vV = 0.0001 * ones(1, h) * d;
-para.b_vV = 0.0001 * ones(1, h) * d;
+para.a_vV = 0.000001 * ones(1, h) * d;
+para.b_vV = 0.000001 * ones(1, h) * d;
 
-para.a_vU = 0.0001 * ones(1, h) * n;
-para.b_vU = 0.0001 * ones(1, h) * n;
+para.a_vU = 0.000001 * ones(1, h) * n;
+para.b_vU = 0.000001 * ones(1, h) * n;
 
 para.m_mV = rand(1,h);
 para.v_mV = hyperpara.iv * ones(1,h) / (d + 1);
@@ -45,12 +45,12 @@ para.m_v = 10 * (rand(d,h) - 0.5);
 para.v_v = hyperpara.iv * ones(d,h) / n;% / sqrt(L)
 
 %for f1
-para.h_a_vV1 = hyperpara.a0d * ones(1, h);
-para.h_b_vV1 = hyperpara.b0d * ones(1, h);
+para.h_a_vV1 = 0.000001 * ones(1, h);
+para.h_b_vV1 = 0.000001 * ones(1, h);
 
 %f2
-para.h_a_vU2 = hyperpara.a0d * ones(1, h);
-para.h_b_vU2 = hyperpara.b0d * ones(1, h);
+para.h_a_vU2 = 0.000001 * ones(1, h);
+para.h_b_vU2 = 0.000001 * ones(1, h);
 
 %f3
 para.h_m_mV3 = zeros(1,h);
@@ -83,8 +83,8 @@ para.h_v_mV9 = hyperpara.iv * ones(d,h);
 para.h_m_mV9 = zeros(d,h);
 para.h_v_v9 = hyperpara.iv * ones(d,h);
 para.h_m_v9 = zeros(d,h);
-para.h_a_vV9 = ones(d,h);
-para.h_b_vV9 = ones(d,h);
+para.h_a_vV9 = 0.00001 * ones(d,h);
+para.h_b_vV9 = 0.00001 * ones(d,h);
 
 %para.a_vV = ones(1,h);
 %para.b_vV = ones(1,h);
@@ -101,8 +101,8 @@ para.h_v_mU10 = hyperpara.iv * ones(n,h);
 para.h_m_mU10 = zeros(n,h);
 para.h_v_u10 = hyperpara.iv * ones(n,h);
 para.h_m_u10 = zeros(n,h);
-para.h_a_vU10 = zeros(n,h);
-para.h_b_vU10 = zeros(n,h);
+para.h_a_vU10 = 0.00001 * ones(n,h);
+para.h_b_vU10 = 0.00001 & ones(n,h);
 
 % [para.m_mU, para.v_mU] = init_gaussian(para.h_m_mUhyperpara.iv, para.h_v_mUhyperpara.iv);
 % [para.m_u, para.v_u] = init_gaussian(para.h_m_uhyperpara.iv, para.h_v_uhyperpara.iv);

@@ -11,7 +11,7 @@ O = R > 0;
 n = size(R,1);
 d = size(R,2);
 L = 5;
-h = 500;
+h = 30;
 
 tr_fraction = 0.8;
 
@@ -79,7 +79,7 @@ hyperpara.b0 = 10*sqrt(10) /2;
 hyperpara.m_b0 = [-6 -2 2 6];
 hyperpara.v0 = 10000;
 
-max_iter = 10;   %iteration number
+max_iter = 3;   %iteration number
 
 %% Initialization should be here
 para = init_para(O_tr, hyperpara);
@@ -106,7 +106,7 @@ end
 %trick
 para.m_b = sort(para.m_b,2);
 %
-[ Rpred ] = predfun( para, hyperpara, pred_entry);
+[Rpred] = predfun(para, hyperpara, pred_entry);
 
 tr_err = rmse(Rpred * [1:5]', R, O_tst)
 random_err = rmse(1+4*rand(nnz(O_tst),1), R, O_tst)
