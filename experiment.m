@@ -3,11 +3,7 @@ clear;
 
 datapath = 'movielens10k.mat';
 R = importdata(datapath);
-<<<<<<< HEAD
 % R = randi([0,5],200,200);
-=======
-%R = randi([0,5],500,500);
->>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
 R = sparse(R);
 O = R > 0;
 % 
@@ -17,74 +13,56 @@ d = size(R,2);
 L = 5;
 h = 500;
 
-<<<<<<< HEAD
-tr_fraction = 0.95;
-=======
 tr_fraction = 0.8;
->>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
 
 %random split the Training data and test data
-[nnz_i, nnz_j, ~] = find(O);
-O_tr = O;
-O_tst = sparse(zeros(n,d));
-<<<<<<< HEAD
-
-=======
+% [nnz_i, nnz_j, ~] = find(O);
+% O_tr = O;
+% O_tst = sparse(zeros(n,d));
 % 
->>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
-count = 0;
-while true
-    
-    row_gt2 = zeros(n,1);
-    row_gt2(sum(O,2) > 1) = 1;
-    col_gt2 = zeros(1,d);
-    col_gt2(sum(O) > 1)=1;
-    
-    is_gt2 = sparse(((row_gt2 * col_gt2) == 1) & O_tr);
-    
-    if sum(is_gt2) == 0
-       break 
-    end
-    
-    [nnz_i, nnz_j, ~] = find(is_gt2);
-    idx = randi([1,length(nnz_i)]);
-    
-    O_tst(nnz_i(idx), nnz_j(idx)) = 1;
-<<<<<<< HEAD
-    O_tr(nnz_i(idx), nnz_j(idx)) = 0;
-    
-    count = count + 1;
-=======
-    O_tr(nnz_i(idx), nnz_j(idx)) = 1;
-    
-    count = count + 1
->>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
-    if count > floor((1 -tr_fraction) * nnz(O))
-       break 
-    end
-end
-
-% tr_idx = randsample(nnz(O), floor(tr_fraction * nnz(O)));
-% tr_id=sub2ind(size(O),nnz_i(tr_idx),nnz_j(tr_idx));
+% count = 0;
+% while true
+%     
+%     row_gt2 = zeros(n,1);
+%     row_gt2(sum(O,2) > 1) = 1;
+%     col_gt2 = zeros(1,d);
+%     col_gt2(sum(O) > 1)=1;
+%     
+%     is_gt2 = sparse(((row_gt2 * col_gt2) == 1) & O_tr);
+%     
+%     if sum(is_gt2) == 0
+%        break 
+%     end
+%     
+%     [nnz_i, nnz_j, ~] = find(is_gt2);
+%     idx = randi([1,length(nnz_i)]);
+%     
+%     O_tst(nnz_i(idx), nnz_j(idx)) = 1;
+%     O_tr(nnz_i(idx), nnz_j(idx)) = 0;
+%     count = count + 1;
 % 
-% O_tr(tr_id) = 1;
-<<<<<<< HEAD
-O_tr = O_tr == 1;
-O_tst = (O - O_tr) == 1;
-=======
+%     if count > floor((1 -tr_fraction) * nnz(O))
+%        break 
+%     end
+% end
+% 
+% % tr_idx = randsample(nnz(O), floor(tr_fraction * nnz(O)));
+% % tr_id=sub2ind(size(O),nnz_i(tr_idx),nnz_j(tr_idx));
+% % 
+% % O_tr(tr_id) = 1;
 % O_tr = O_tr == 1;
 % O_tst = (O - O_tr) == 1;
->>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
+
+O_tr_tst = importdata('O.mat');
+O_tr = O_tr_tst.O_tr;
+O_tst = O_tr_tst.O_tst;
 
 hyperpara.n = n;
 hyperpara.d = d;
 hyperpara.L = L;
 hyperpara.h = h;
-<<<<<<< HEAD
 hyperpara.iv = 100000;
-=======
-hyperpara.iv = 1000000;
->>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
+
 
 %% Setting hyperparameters
 hyperpara.m_mu = 0;
@@ -101,18 +79,14 @@ hyperpara.b0 = 10*sqrt(10) /2;
 hyperpara.m_b0 = [-6 -2 2 6];
 hyperpara.v0 = 10000;
 
-<<<<<<< HEAD
-max_iter = 3;   %iteration number
-=======
 max_iter = 10;   %iteration number
->>>>>>> 3ec0fcf5a21c7eefa71d6a7d1fce3d1da656e5e6
 
 %% Initialization should be here
 para = init_para(O_tr, hyperpara);
 
 for iter = 1:max_iter
     disp(['Iteration:',int2str(iter)])
-%     if iter == 1
+     if iter == 1
         para = update_f1(para, hyperpara);
         para = update_f2(para, hyperpara);
         para = update_f3(para, hyperpara);
@@ -120,7 +94,7 @@ for iter = 1:max_iter
         para = update_f5(para, hyperpara);
         para = update_f6(para, hyperpara);
         para = update_f7(para, hyperpara);
-%     end
+     end
     para = update_f8(para, hyperpara);
     para = update_f9(para, hyperpara);
     para = update_f10(para, hyperpara);
@@ -128,7 +102,7 @@ for iter = 1:max_iter
     para = update_f12(para, hyperpara, O_tr, iter);
     para = update_f13(para, hyperpara, O_tr, R);
 end
-[pred_entry.row, pred_entry.col, ~] = find(O_tr);
+[pred_entry.row, pred_entry.col, ~] = find(O_tst);
 %trick
 para.m_b = sort(para.m_b,2);
 %
