@@ -29,8 +29,6 @@ m_v_t = para.m_v(obs_col, :);
 v_v_t = para.v_v(obs_col, :);
 v_u_t = para.v_u(obs_row, :);
 
-
-
 mumv = dot(m_u_t, m_v_t, 2);
 
 tmp1 = m_c_11 - mumv;

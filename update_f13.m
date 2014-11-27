@@ -54,9 +54,9 @@ for idx = 1:length(nnz_i)
                 para.v_a(i,j) = (1 / ((1 / v_a_n13ijk(i,j)) + (1 / para.h_v_a13{k}(i,j))));
                 para.m_a(i,j) = para.v_a(i,j) * (m_a_n13ijk(i,j) / v_a_n13ijk(i,j) + para.h_m_a13{k}(i,j) / para.h_v_a13{k}(i,j));
             else
-                para.m_b(j,:) = old_mb;
-                para.v_b(j,:) = old_vb;
-                continue
+                para.m_b(j,k) = old_mb(k);
+                para.v_b(j,k) = old_vb(k);
+                %continue
             end
         end
     end

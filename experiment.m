@@ -11,7 +11,7 @@ O = R > 0;
 n = size(R,1);
 d = size(R,2);
 L = 5;
-h = 30;
+h = 30
 
 tr_fraction = 0.8;
 
@@ -61,7 +61,7 @@ hyperpara.n = n;
 hyperpara.d = d;
 hyperpara.L = L;
 hyperpara.h = h;
-hyperpara.iv = 100000;
+hyperpara.iv = 1000;
 
 
 %% Setting hyperparameters
@@ -77,16 +77,16 @@ hyperpara.a0 = 10/2;
 hyperpara.b0 = 10*sqrt(10) /2;
 
 hyperpara.m_b0 = [-6 -2 2 6];
-hyperpara.v0 = 10000;
+hyperpara.v0 = 0.1;
 
-max_iter = 3;   %iteration number
+max_iter = 10;   %iteration number
 
 %% Initialization should be here
 para = init_para(O_tr, hyperpara);
 
 for iter = 1:max_iter
-    disp(['Iteration:',int2str(iter)])
-     if iter == 1
+    %disp(['Iteration:',int2str(iter)])
+    if iter == 1
         para = update_f1(para, hyperpara);
         para = update_f2(para, hyperpara);
         para = update_f3(para, hyperpara);
@@ -94,19 +94,25 @@ for iter = 1:max_iter
         para = update_f5(para, hyperpara);
         para = update_f6(para, hyperpara);
         para = update_f7(para, hyperpara);
-     end
+    end
     para = update_f8(para, hyperpara);
     para = update_f9(para, hyperpara);
     para = update_f10(para, hyperpara);
     para = update_f11(para, hyperpara, O_tr, iter);
     para = update_f12(para, hyperpara, O_tr, iter);
     para = update_f13(para, hyperpara, O_tr, R);
-end
+
 [pred_entry.row, pred_entry.col, ~] = find(O_tst);
 %trick
 para.m_b = sort(para.m_b,2);
 %
-[Rpred] = predfun(para, hyperpara, pred_entry);
+[Rpred, tr_err, random_err, criteria] = predfun(para, hyperpara, pred_entry, R, O_tst);
 
-tr_err = rmse(Rpred * [1:5]', R, O_tst)
-random_err = rmse(1+4*rand(nnz(O_tst),1), R, O_tst)
+%if satisfy the criteria
+if criteria
+   break 
+end
+
+end
+
+tr_err

@@ -16,11 +16,11 @@ for j = 1:d
     for k = 1:h
         %h dimension
         v_mV_n9jk = (1 ./ ((1 ./ para.v_mV) - (1 ./ para.h_v_mV9(j,:))));
-        m_mV_n9jk = v_mV_n9jk .* ((para.m_mV ./ para.v_mV - para.h_m_mV9(j,:)) ./ para.h_v_mV9(j,:));
+        m_mV_n9jk = v_mV_n9jk .* (para.m_mV ./ para.v_mV - para.h_m_mV9(j,:) ./ para.h_v_mV9(j,:));
         
         %d * h matrix
         v_v_n9jk(j,k) = (1 ./ ((1 ./ para.v_v(j,k)) - (1 ./ para.h_v_v9(j,k))));
-        m_v_n9jk(j,k) = v_v_n9jk(j,k) .* ((para.m_v(j,k) ./ para.v_v(j,k)) - para.h_m_v9(j,k) ./ para.h_v_v9(j,k));
+        m_v_n9jk(j,k) = v_v_n9jk(j,k) .* (para.m_v(j,k) ./ para.v_v(j,k) - para.h_m_v9(j,k) ./ para.h_v_v9(j,k));
         
         %h dimension
         a_vV_n9jk = (para.a_vV - para.h_a_vV9(j,:) + 1);

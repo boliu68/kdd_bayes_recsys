@@ -1,4 +1,4 @@
-function [ Rpred ] = predfun( para, hyperpara, pred_entry )
+function [ Rpred, tr_err, random_err, criteria] = predfun( para, hyperpara, pred_entry, R, O_tst)
 %This function will predict the dicrete distribution of the require entry
 %   #class : L , #pred_entry : nPred
 %   pred_entry.row : the row  of the entry (should be a vector)
@@ -31,8 +31,10 @@ nPred = length(pred_row);
 
 m_u_t = m_u(pred_row,:);
 m_v_t = m_v(pred_col,:);
+m_v_t(isnan(m_v_t))=0;
 v_u_t = v_u(pred_row,:);
 v_v_t = v_v(pred_col,:);
+v_v_t(isnan(v_v_t))=1;
 
 m_c_star = dot(m_u_t , m_v_t,2);
 v_c_star = dot((m_u_t.^2),v_v_t,2) + dot(v_u_t , (m_v_t.^2),2) + dot(v_u_t , v_v_t,2);
@@ -62,8 +64,17 @@ for i = 1:L
     end
     Rpred(:, i) =  normcdf(zeta1) - normcdf(zeta2);
 end
+Rpred(isnan(Rpred))=0.2;
 
 
+tr_err = rmse(Rpred * [1:5]', R, O_tst);
+random_err = rmse(1+4*rand(nnz(O_tst),1), R, O_tst);
+
+if tr_err < 1.15
+   criteria = true;
+else
+    criteria = false;
+end
 
 end
 

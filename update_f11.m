@@ -64,9 +64,9 @@ local_para.v_u_n11 = v_u_n11;
 local_para.m_u_n11 = m_u_n11;
 local_para.v_c_n11 = v_c_n11;
 local_para.m_c_n11 = m_c_n11;
-option.stepsize = 0.1;
-option.eps = 0;
-option.maxiter = 5;
+option.stepsize = 0.01;
+option.eps = 0.01;
+option.maxiter = 10;
 old_mu = para.m_u;
 old_mv = para.m_v;
 [para.m_u, para.m_v] = f11_gradient_update(para, hyperpara, local_para, option, O);
@@ -82,19 +82,19 @@ h_v_v11_upd = (1 ./ ((1 ./ para.v_v) - (1 ./ v_v_n11)));
 h_v_u11_upd = (1 ./ ((1 ./ para.v_u) - (1 ./ v_u_n11)));
 h_v_c11_upd = (1 ./ ((1 ./ para.v_c) - (1 ./ v_c_n11)));
 
-is_update = h_v_v11_upd > 0;
+is_update = (h_v_v11_upd > 0) & ~isinf(h_v_v11_upd) & ~isnan(h_v_v11_upd);
 para.h_v_v11(is_update) = h_v_v11_upd(is_update);%(1 ./ ((1 ./ para.v_v(j,is_update)) + (1 ./ v_v_n11(j,is_update))));
 para.h_m_v11(is_update) = para.h_v_v11(is_update) .* (para.m_v(is_update) ./ para.v_v(is_update) - m_v_n11(is_update) ./ v_v_n11(is_update));
 para.m_v(~is_update) = old_mv(~is_update);
 para.v_v(~is_update) = old_vv(~is_update);
 
-is_update = h_v_u11_upd >0;
+is_update = h_v_u11_upd >0 & ~isinf(h_v_u11_upd) & ~isnan(h_v_u11_upd);
 para.h_v_u11(is_update) = h_v_u11_upd(is_update);%(1 ./ ((1 ./ para.v_u(i, is_update)) + (1 ./ v_u_n11(i, is_update))));
 para.h_m_u11(is_update) = para.h_v_u11(is_update) .* (para.m_u(is_update) ./ para.v_u(is_update) - m_u_n11(is_update) ./ v_u_n11(is_update));
 para.m_u(~is_update) = old_mu(~is_update);
 para.v_u(~is_update) = old_vu(~is_update);
 
-is_update = h_v_c11_upd>0;
+is_update = h_v_c11_upd>0 & ~isinf(h_v_c11_upd) & ~isnan(h_v_c11_upd);
 para.h_v_c11(is_update&O) = (1 ./ ((1 ./ para.v_c(is_update&O)) - (1 ./ v_c_n11(is_update&O))));
 para.h_m_c11(is_update&O) = para.h_v_c11(is_update&O) .* (para.m_c(is_update&O) ./ para.v_c(is_update&O) - m_c_n11(is_update&O) ./ v_c_n11(is_update&O));
 para.v_c((~is_update) & O) = old_v_c((~is_update)&O);

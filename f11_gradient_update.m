@@ -21,7 +21,7 @@ for iter = 1: maxIter
     para.m_v = m_v;
     
     %check stop condition
-
+    iter;
     objvalue =   objective_func(para, O, local_para);
 
     if(iter > 1)

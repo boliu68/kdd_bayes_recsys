@@ -35,7 +35,7 @@ hyperpara.n = 50;
 hyperpara.d = 40;
 hyperpara.L = 5;
 hyperpara.h = 3;
-hyperpara.iv = 10000;
+hyperpara.iv = 1000;
 
 %% Setting hyperparameters
 hyperpara.m_mu = 0;
